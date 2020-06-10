@@ -7,10 +7,11 @@
 @import url(./__add-btn/profile__add-btn.css);
 
 .profile {
-  background-color: tomato;
+  /* background-color: tomato; */
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
