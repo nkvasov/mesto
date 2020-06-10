@@ -19,3 +19,11 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
 }
+
+@media screen and (max-width: 425px) {
+  .profile {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+}
