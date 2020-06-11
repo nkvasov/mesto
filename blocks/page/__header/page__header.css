@@ -1,11 +1,11 @@
 .page__header {
-  margin-bottom: 40px;
+  padding-bottom: 40px;
 }
 
 
 @media screen and (max-width: 425px) {
   .page__header {
     padding-left: 27px;
-    margin-bottom: 31.6px;
+    padding-bottom: 31.6px;
   }
 }

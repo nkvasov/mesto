@@ -2,15 +2,41 @@
   margin: 0;
   padding: 0;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 1.22;
   font-weight: 400;
 }
 
 
+
+@media screen and (max-width: 768px) {
+  .profile__description {
+    font-size: 16px;
+  }
+}
+
 @media screen and (max-width: 425px) {
   .profile__description {
     font-size: 14px;
-    line-height: 17px;
     text-align: center;
+  }
+}
+
+
+
+
+
+@media screen and (max-width: 1024px) {
+  .profile__name {
+    font-size: calc(1.953125vw + 22px);
+    /* text-align: center; */
+  }
+}
+
+
+@media screen and (max-width: 425px) {
+  .profile__name {
+    margin-right: 7px;
+    font-size: 27px;
+    /* text-align: center; */
   }
 }

@@ -1,5 +1,6 @@
 .profile__info {
-
+  /* flex-basis: calc(100% - 150px); */
+  flex-basis: max(400px, calc(100% - 150px));
 }
 
 

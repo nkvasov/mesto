@@ -1,0 +1,19 @@
+.profile__content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-right: 10px;
+  flex-shrink: 2;
+  flex-basis: min-content;
+  box-sizing: border-box;
+  /* flex: 0 1 auto; */
+}
+
+
+@media screen and (max-width: 425px) {
+  .profile__content {
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-right: 0;
+  }
+}
