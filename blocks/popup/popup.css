@@ -1,17 +1,17 @@
 @import url(./__container/popup__container.css);
 @import url(./__title/popup__title.css);
+@import url(./_status/popup_status_closed.css);
+@import url(./_status/popup_status_opened.css);
 
 .popup {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-
   color: #000000;
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   -moz-osx-font-smoothing: grayscale;
@@ -51,4 +51,26 @@
 .popup__btn:hover {
   opacity: 0.8;
   cursor: pointer;
+}
+
+.popup__close-btn {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  left: 390px;
+  top: -105px;
+  background-image: url(../../images/CloseIcon.svg);
+  background-position: center;
+  width: 41px;
+  height: 41px;
+  /* transform: rotate(45deg); */
+  border-radius: 20.5px;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.popup__close-btn:hover {
+  opacity: 0.6;
 }
