@@ -3,7 +3,7 @@
 }
 
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 525px) {
   .page__header {
     padding-left: 27px;
     padding-bottom: 31.6px;

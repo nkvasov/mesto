@@ -4,7 +4,7 @@
 }
 
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 525px) {
   .page__content {
     padding-bottom: 48px;
     padding-top: 42px;
