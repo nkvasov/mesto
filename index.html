@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="page">
-  <div class="popup popup_status_closed">
-    <form class="popup__container" action="">
+  <section class="popup">
+    <form class="popup__container">
       <h3 class="popup__title">Редактировать профиль</h3>
-      <button class="popup__close-btn"></button>
-      <input class="popup__input" type="text">
-      <input class="popup__input" type="text">
+      <div class="popup__close-btn"></div>
+      <input class="popup__input popup__name-input" type="text">
+      <input class="popup__input popup__job-input" type="text">
       <button class="popup__btn">Сохранить</button>
     </form>
-  </div>
+  </section>
   <div class="page__container">
     <header class="header page__header">
       <a href="#" class="header__logo">
@@ -32,14 +32,14 @@
 
             <div class="profile__title-block">
               <h1 class="profile__name">Жак-Ив Кусто из Константинополя</h1>
-              <form><button class="profile__edit-btn"></button></form>
+              <button class="profile__edit-btn"></button>
             </div>
             <p class="profile__description">Исследователь океана Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est molestiae praesentium quo eum, sed earum veniam impedit, magnam voluptates cumque aspernatur voluptatum provident repellendus! Asperiores minima quos obcaecati voluptates excepturi?</p>
 
           </div>
 
         </div>
-        <form action=""><button class="add-btn profile__add-btn"></button></form>
+        <form><button class="add-btn profile__add-btn"></button></form>
 
       </section>
 
