@@ -1,5 +1,14 @@
 @import url(./__logo/header__logo.css);
 
 .header {
+  padding-bottom: 40px;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+
+@media screen and (max-width: 525px) {
+  .header {
+    padding-left: 27px;
+    padding-bottom: 20px;
+  }
 }

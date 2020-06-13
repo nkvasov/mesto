@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 50px;
 
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   -moz-osx-font-smoothing: grayscale;
@@ -21,9 +22,18 @@
 }
 
 
+@media screen and (max-width: 768px) {
+  .profile {
+    margin-bottom: 35px;
+  }
+}
+
 @media screen and (max-width: 525px) {
   .profile {
     flex-direction: column;
     align-items: stretch;
   }
 }
+
+
+

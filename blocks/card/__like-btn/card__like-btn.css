@@ -10,6 +10,7 @@
   background-repeat: no-repeat;
   cursor: pointer;
   outline: none;
+  transition: 0.2s;
 }
 
 .card__like-btn:hover {

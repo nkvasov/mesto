@@ -11,15 +11,15 @@
 <body class="page">
 
   <div class="page__container">
-    <header class="header page__header">
+    <header class="header">
       <a href="#" class="header__logo">
         <img src="./images/mesto-russia-logo.svg" alt="Логотип Mesto Russia">
       </a>
     </header>
 
-    <main class="content page__content">
+    <main class="content">
 
-      <section class="profile page__profile">
+      <section class="profile">
         <div class="profile__content">
           <img src="./images/profile_kusto.jpg" class="profile__avatar" alt="фото Жак-Ив Кусто">
           <div class="profile__info">
@@ -38,71 +38,73 @@
       </section>
 
       <section class="cards">
-        <div class="card">
-          <img class="card__image" src="./images/card_image_Gamla-stanStockholmSweden.jpg"
-            alt="Гамластан, Стокгольм, Швеция">
-          <div class="card__caption">
-            <h2 class="card__title">Стокгольм</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+        <ul class="cards__container">
+          <li class="card">
+            <img class="card__image" src="./images/card_image_Gamla-stanStockholmSweden.jpg"
+              alt="Гамластан, Стокгольм, Швеция">
+            <div class="card__caption">
+              <h2 class="card__title">Стокгольм</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
 
-        <div class="card">
-          <img class="card__image" src="./images/card_image_DotonboriRiverOsakaJapan.jpg" alt="Осака, Япония">
-          <div class="card__caption">
-            <h2 class="card__title">Осака, Япония</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+          <li class="card">
+            <img class="card__image" src="./images/card_image_DotonboriRiverOsakaJapan.jpg" alt="Осака, Япония">
+            <div class="card__caption">
+              <h2 class="card__title">Осака, Япония</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
 
-        <div class="card">
-          <img class="card__image" src="./images/card_image_CapeSchanckVIC_Australia.jpg" alt="Австралия">
-          <div class="card__caption">
-            <h2 class="card__title">Австралия</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+          <li class="card">
+            <img class="card__image" src="./images/card_image_CapeSchanckVIC_Australia.jpg" alt="Австралия">
+            <div class="card__caption">
+              <h2 class="card__title">Австралия</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
 
-        <div class="card">
-          <img class="card__image" src="./images/card_image_JoshuaTreeNationalParkCaliforniaUSA.jpg"
-            alt="Национальный парк Joshua Tree, Калифорния, США">
-          <div class="card__caption">
-            <h2 class="card__title">Национальный парк Joshua Tree, Калифорния, США</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+          <li class="card">
+            <img class="card__image" src="./images/card_image_JoshuaTreeNationalParkCaliforniaUSA.jpg"
+              alt="Национальный парк Joshua Tree, Калифорния, США">
+            <div class="card__caption">
+              <h2 class="card__title">Национальный парк Joshua Tree, Калифорния, США</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
 
-        <div class="card">
-          <img class="card__image" src="./images/card_image_morocco-desert-sky-theMilkyWay.jpg"
-            alt="Млечный путь над пустыней, Марокко">
-          <div class="card__caption">
-            <h2 class="card__title">Марокко</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+          <li class="card">
+            <img class="card__image" src="./images/card_image_morocco-desert-sky-theMilkyWay.jpg"
+              alt="Млечный путь над пустыней, Марокко">
+            <div class="card__caption">
+              <h2 class="card__title">Марокко</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
 
-        <div class="card">
-          <img class="card__image" src="./images/card_image_SanFranciscoCAUSA.jpg" alt="Сан-Франциско, США">
-          <div class="card__caption">
-            <h2 class="card__title">Сан-Франциско, США</h2>
-            <button class="card__like-btn" type="button"></button>
-          </div>
-        </div>
+          <li class="card">
+            <img class="card__image" src="./images/card_image_SanFranciscoCAUSA.jpg" alt="Сан-Франциско, США">
+            <div class="card__caption">
+              <h2 class="card__title">Сан-Франциско, США</h2>
+              <button class="card__like-btn" type="button"></button>
+            </div>
+          </li>
+        </ul>
       </section>
 
       <section class="popup">
         <form class="popup__container">
           <h3 class="popup__title">Редактировать профиль</h3>
           <button class="popup__close-btn" type="button"></button>
-          <input class="popup__input popup__name-input" type="text">
-          <input class="popup__input popup__job-input" type="text">
+          <input class="popup__input popup__name-input" type="text" name="profileName">
+          <input class="popup__input popup__job-input" type="text" name="profileDescription">
           <button class="popup__submit-btn" type="submit">Сохранить</button>
         </form>
       </section>
 
     </main>
 
-    <footer class="footer page__footer">
+    <footer class="footer">
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
 

@@ -8,3 +8,11 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
 }
+
+
+@media screen and (max-width: 525px) {
+  .footer {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}

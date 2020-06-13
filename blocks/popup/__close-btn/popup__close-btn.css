@@ -12,6 +12,7 @@
   width: 41px;
   height: 41px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .popup__close-btn:hover {

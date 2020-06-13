@@ -10,7 +10,7 @@
   background-size: 10px;
   box-shadow: none;
   cursor: pointer;
-
+  transition: 0.2s;
 }
 
 .profile__edit-btn:hover {
