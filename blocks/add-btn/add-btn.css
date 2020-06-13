@@ -17,10 +17,10 @@
 }
 
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 525px) {
   .add-btn {
     width: 100%;
-    text-align: center;
+    background-size: 16px;
 
   }
 }

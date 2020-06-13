@@ -1,5 +1,4 @@
 .profile__info {
-  /* background-color: seagreen; */
   max-width: calc(100% - 170px);
   /* min-width: 438px; */
   /* max-width: max(400px, calc(100% - 170px)); */
@@ -11,12 +10,5 @@
 @media screen and (max-width: 768px) {
   .profile__info {
     max-width: 90%;
-  }
-}
-
-@media screen and (max-width: 525px) {
-  .profile__info {
-    /* max-width: 100%; */
-    /* margin-bottom: 36px; */
   }
 }

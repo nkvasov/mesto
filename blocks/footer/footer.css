@@ -7,13 +7,4 @@
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
-  /* background-color: red; */
-}
-
-
-@media screen and (max-width: 425px) {
-  .footer {
-    padding-left: 19px;
-    padding-right: 19px;
-  }
 }
