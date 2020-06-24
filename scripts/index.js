@@ -12,13 +12,58 @@ const profileName = profile.querySelector('.profile__name'); // имя проф�
 const profileJob = profile.querySelector('.profile__description'); // описание профиля на странице
 const profileEditBtn = profile.querySelector('.profile__edit-btn'); // кнопка редактирования профиля
 
+const cardsContainer = document.querySelector('.cards__container'); // список карточек
 
+
+const initialCards = [
+  {
+      name: 'Архыз',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+      name: 'Челябинская область',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+      name: 'Иваново',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+      name: 'Камчатка',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+      name: 'Холмогорский район',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+      name: 'Байкал',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+initialCards.forEach(card => {
+  addCard(card.name, card.link);
+})
 
 popupCloseBtn.addEventListener('click', popupToggle); // обработка нажатия кнопки "Закрыть" попап
 
 profileEditBtn.addEventListener('click', editProfile); // обработка нажатия кнопки редактирования профиля
 
 popupForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
+
+
+
+
+
+function addCard(cardTitle, cardLink) {
+  const newCard = document.querySelector('.card-template').content.cloneNode(true); // клонируем разметку для карточки
+  newCard.querySelector('.card__title').textContent = cardTitle; // заполняем заголовок карточки
+  newCard.querySelector('.card__image').src = cardLink; // линк на имидж
+  newCard.querySelector('.card__image').alt = 'фото ' + cardTitle ;
+
+  cardsContainer.prepend(newCard); // добавляем в начало списка
+}
 
 
 
