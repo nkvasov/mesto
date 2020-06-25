@@ -4,8 +4,6 @@
 @import url(./__input/popup__input.css);
 @import url(./__submit-btn/popup__submit-btn.css);
 
-@import url(./_opened/popup_opened.css);
-
 .popup {
   position: fixed;
   top: 0;

@@ -1,20 +1,24 @@
 // Из чеклиста для самопроверки:
 // DOM-элементы, к которым есть обращение в скрипте, вынесены в константы.
 
-const popup = document.querySelector('.popup'); // попап
-const popupCloseBtn = popup.querySelector('.popup__close-btn'); // кнопка закрытия попапа
-const popupForm = popup.querySelector('.popup__container'); // форма попапа
-const nameInput = popupForm.querySelector('.popup__name-input'); // поле ввода имени Профиля
-const jobInput = popupForm.querySelector('.popup__job-input'); // поле ввода описания Профиля
-
 const profile = document.querySelector('.profile'); // секция Профиль
 const profileName = profile.querySelector('.profile__name'); // имя профиля на странице
 const profileJob = profile.querySelector('.profile__description'); // описание профиля на странице
 const profileEditBtn = profile.querySelector('.profile__edit-btn'); // кнопка редактирования профиля
+const addCardBtn = profile.querySelector('.add-btn'); // кнопка добавления карточки
 
-const cardsContainer = document.querySelector('.cards__container'); // список карточек
 
+const editProfilePopup = document.querySelector('.edit-profile-popup'); // попап профиля
+const editProfileCloseBtn = editProfilePopup.querySelector('.edit-profile-close-btn'); // кнопка закрытия попапа
+const editProfileForm = editProfilePopup.querySelector('.popup__container'); // форма попапа
 
+const editProfileNameInput = editProfileForm.querySelector('.popup__name-input'); // поле ввода имени Профиля
+const editProfileJobInput = editProfileForm.querySelector('.popup__job-input'); // поле ввода описания Профиля
+
+const addCardPopup = document.querySelector('.add-card-popup'); // попап добавления карточки ???
+
+const cardsContainer = document.querySelector('.cards__container'); // секция карточек
+// массив карточек
 const initialCards = [
   {
       name: 'Архыз',
@@ -41,18 +45,18 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-
+// заполняем секцию карточками
 initialCards.forEach(card => {
   addCard(card.name, card.link);
 })
 
-popupCloseBtn.addEventListener('click', popupToggle); // обработка нажатия кнопки "Закрыть" попап
-
 profileEditBtn.addEventListener('click', editProfile); // обработка нажатия кнопки редактирования профиля
 
-popupForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
+editProfileCloseBtn.addEventListener('click', popupToggle); // обработка нажатия кнопки "Закрыть" попап
 
+editProfileForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
 
+addCardBtn.addEventListener('click', popupToggle);
 
 
 
@@ -66,22 +70,56 @@ function addCard(cardTitle, cardLink) {
 }
 
 
-
-function popupToggle() {
+function popupToggle1(popup) {
   popup.classList.toggle('popup_opened');
 }
 
-function editProfile() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
-  popupToggle();
+
+function returnCurrentPopup(evt) {
+  if (evt.target === profileEditBtn || evt.target === editProfileCloseBtn || evt.target === editProfileForm) {
+    return editProfilePopup;
+  } else if (evt.target === addCardPopup) {
+    return addCardPopup;
+  }
+}
+
+function currentPopupToggle(evt) {
+  const currentEvent = evt;
+  popupToggle1(returnCurrentPopup(currentEvent));
+
+}
+
+function popupToggle(evt) {
+  let currentPopup;
+  switch (evt.target) {
+    case addCardBtn:
+      currentPopup = addCardPopup;
+      break;
+    case profileEditBtn:
+      currentPopup = editProfilePopup;
+      break;
+    case editProfileCloseBtn:
+      currentPopup = editProfilePopup;
+      break;
+    case editProfileForm:
+      currentPopup = editProfilePopup;
+  }
+  currentPopup.classList.toggle('popup_opened');
+}
+
+function editProfile(evt) {
+  const currentEvt = evt;
+  editProfileNameInput.value = profileName.textContent;
+  editProfileJobInput.value = profileJob.textContent;
+  popupToggle(currentEvt);
 }
 
 function formSubmitHandler (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 // Так мы можем определить свою логику отправки.
-    profileName.textContent = nameInput.value;
-    profileJob.textContent = jobInput.value;
-    popupToggle();
+    const currentEvt = evt;
+    profileName.textContent = editProfileNameInput.value;
+    profileJob.textContent = editProfileJobInput.value;
+    popupToggle(currentEvt);
 }
 

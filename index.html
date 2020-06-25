@@ -33,7 +33,7 @@
           </div>
 
         </div>
-        <button class="add-btn profile__add-btn"></button>
+        <button class="add-btn"></button>
 
       </section>
 
@@ -92,13 +92,23 @@
         </ul>
       </section>
 
-      <section class="popup">
-        <form class="popup__container">
+      <section class="popup edit-profile-popup">
+        <form class="popup__container" name="edit-profile">
           <h3 class="popup__title">Редактировать профиль</h3>
-          <button class="popup__close-btn" type="button"></button>
-          <input class="popup__input popup__name-input" type="text" name="profileName">
-          <input class="popup__input popup__job-input" type="text" name="profileDescription">
+          <button class="popup__close-btn edit-profile-close-btn" type="button"></button>
+          <input class="popup__input popup__name-input" type="text" name="profile-name">
+          <input class="popup__input popup__job-input" type="text" name="profile-description">
           <button class="popup__submit-btn" type="submit">Сохранить</button>
+        </form>
+      </section>
+
+      <section class="popup add-card-popup">
+        <form class="popup__container" name="add-card">
+          <h3 class="popup__title">Новое место</h3>
+          <button class="popup__close-btn" type="button"></button>
+          <input class="popup__input popup__card-name-input" type="text" name="card-name" placeholder="Название">
+          <input class="popup__input popup__card-link-input" type="text" name="card-link" placeholder="Ссылка на картинку">
+          <button class="popup__submit-btn" type="submit">Создать</button>
         </form>
       </section>
 
