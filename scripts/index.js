@@ -1,25 +1,29 @@
-// Из чеклиста для самопроверки:
-// DOM-элементы, к которым есть обращение в скрипте, вынесены в константы.
+// Элементы секции Профиль на странице
+const profile = document.querySelector('.profile');
+const profileName = profile.querySelector('.profile__name');
+const profileJob = profile.querySelector('.profile__description');
+const profileEditBtn = profile.querySelector('.profile__edit-btn');
+const addCardBtn = profile.querySelector('.add-btn');
 
-const profile = document.querySelector('.profile'); // секция Профиль
-const profileName = profile.querySelector('.profile__name'); // имя профиля на странице
-const profileJob = profile.querySelector('.profile__description'); // описание профиля на странице
-const profileEditBtn = profile.querySelector('.profile__edit-btn'); // кнопка редактирования профиля
-const addCardBtn = profile.querySelector('.add-btn'); // кнопка добавления карточки
+// Элементы попапа "Редактирование профиля"
+const profileForm = document.forms['edit-profile'];
+const profilePopup = profileForm.closest('.popup');
+const profileNameInput = profileForm.elements['profile-name']; // поле ввода имени Профиля
+const profileJobInput = profileForm.elements['profile-description'] ; // поле ввода описания Профиля
 
+// Элементы попапа "Добавление карточки"
+const cardForm = document.forms['add-card'];
+const cardPopup = cardForm.closest('.popup');
+const cardNameInput = cardForm.elements['card-name'];
+const cardLinkInput = cardForm.elements['card-link'];
 
-const editProfilePopup = document.querySelector('.edit-profile-popup'); // попап профиля
-// const editProfileForm = editProfilePopup.querySelector('.popup__container'); // форма попапа
-const editProfileForm = document.forms['edit-profile']; // форма попапа
-const editProfileCloseBtn = editProfileForm.elements.close; // кнопка закрытия попапа
-const editProfileNameInput = editProfileForm.querySelector('.popup__name-input'); // поле ввода имени Профиля
-const editProfileJobInput = editProfileForm.querySelector('.popup__job-input'); // поле ввода описания Профиля
+// Открытый попап
+let currentPopup = null;
 
-const addCardPopup = document.querySelector('.add-card-popup'); // попап добавления карточки ???
-const addCardForm = document.forms['add-card']; // форма добавления карточки
+// Секция карточек на странице
+const cardsContainer = document.querySelector('.cards__container');
 
-const cardsContainer = document.querySelector('.cards__container'); // секция карточек
-// массив карточек
+// Исходный массив карточек
 const initialCards = [
   {
       name: 'Архыз',
@@ -53,24 +57,28 @@ initialCards.forEach(card => {
 
 profileEditBtn.addEventListener('click', editProfile); // обработка нажатия кнопки редактирования профиля
 
-// editProfileCloseBtn.addEventListener('click', popupToggle); // обработка нажатия кнопки "Закрыть" попап
-editProfileCloseBtn.addEventListener('click', currentPopupToggle); // обработка нажатия кнопки "Закрыть" попап
+addCardBtn.addEventListener('click', openPopup);
 
-editProfileForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
+profileForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
 
-addCardBtn.addEventListener('click', currentPopupToggle);
+cardForm.addEventListener('submit', cardFormSubmitHandler);
 
-
-
+// Функция клонирует карточку по шаблону, заполняет значениями и добавляет на страницу.
 function addCard(cardTitle, cardLink) {
-  const newCard = document.querySelector('.card-template').content.cloneNode(true); // клонируем разметку для карточки
-  newCard.querySelector('.card__title').textContent = cardTitle; // заполняем заголовок карточки
-  newCard.querySelector('.card__image').src = cardLink; // линк на имидж
+  const newCard = document.querySelector('.card-template').content.cloneNode(true);
+  newCard.querySelector('.card__title').textContent = cardTitle;
+  newCard.querySelector('.card__image').src = cardLink;
   newCard.querySelector('.card__image').alt = 'фото ' + cardTitle ;
   addCardListeners(newCard);
-  cardsContainer.prepend(newCard); // добавляем в начало списка
+  cardsContainer.prepend(newCard);
 }
 
+// Функция навешивает обработчики событий на карточку
+function addCardListeners(card) {
+  card.querySelector('.card__trash-btn').addEventListener('click', deleteCard);
+  card.querySelector('.card__like-btn').addEventListener('click', toggleLikeCard);
+  card.querySelector('.card__image').addEventListener('click', openImagePopup);
+}
 
 function deleteCard(evt) {
   evt.target.closest('.card').remove();
@@ -80,16 +88,7 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
-function openImagePopup(evt) {
-  console.log('open');
-}
-
-function addCardListeners(card) {
-  card.querySelector('.card__trash-btn').addEventListener('click', deleteCard);
-  card.querySelector('.card__like-btn').addEventListener('click', toggleLikeCard);
-  card.querySelector('.card__image').addEventListener('click', openImagePopup);
-}
-
+// Функция клонирует попап для картинки по шаблону, заполянет контентом и размещает на странице.
 function openImagePopup(evt) {
   const card = evt.target.closest('.card');
   const imagePopup = document.querySelector('.image-popup-template').content.cloneNode(true);
@@ -100,71 +99,53 @@ function openImagePopup(evt) {
     document.querySelector('.image-popup').remove();
   });
   document.querySelector('.content').append(imagePopup);
-  // document.querySelector('.image-popup__caption').offsetWidth = document.querySelector('.image-popup__image').offsetWidth;
-  let width = document.querySelector('.image-popup__image').offsetWidth;
-  console.log(width);
-  document.querySelector('.image-popup__caption').style.width = `${width}px`;
-  console.log(document.querySelector('.image-popup__caption').offsetWidth);
-}
-
-// function popupToggle(evt) {
-//   evt.target.closest('.popup').classList.toggle('popup_opened');
-// }
-
-
-function popupToggle1(popup) {
-  popup.classList.toggle('popup_opened');
 }
 
 
-function returnCurrentPopup(evt) {
-  if (evt.target === profileEditBtn || evt.target === editProfileCloseBtn || evt.target === editProfileForm) {
-    return editProfilePopup;
+function openPopup(evt) {
+  const currentEvent = evt;
+  setCurrentPopup(currentEvent);
+  popupToggle();
+  currentPopup.querySelector('.popup__close-btn').addEventListener('click', closePopup);
+}
+
+function closePopup() {
+  popupToggle();
+  currentPopup = null;
+}
+
+// Функция устанавливает текущий попап в зависимости от нажатой кнопки
+function setCurrentPopup(evt) {
+  if (evt.target === profileEditBtn) {
+    currentPopup = profilePopup;
   } else if (evt.target === addCardBtn) {
-    return addCardPopup;
+    currentPopup = cardPopup;
   }
 }
 
-function currentPopupToggle(evt) {
-  const currentEvent = evt;
-  popupToggle1(returnCurrentPopup(currentEvent));
+function popupToggle() {
+  currentPopup.classList.toggle('popup_opened');
 }
-
 
 function editProfile(evt) {
   const currentEvt = evt;
-  editProfileNameInput.value = profileName.textContent;
-  editProfileJobInput.value = profileJob.textContent;
-  currentPopupToggle(currentEvt);
+  profileNameInput.value = profileName.textContent;
+  profileJobInput.value = profileJob.textContent;
+  openPopup(currentEvt);
 }
 
 function formSubmitHandler (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 // Так мы можем определить свою логику отправки.
-    const currentEvt = evt;
-    profileName.textContent = editProfileNameInput.value;
-    profileJob.textContent = editProfileJobInput.value;
-    currentPopupToggle(currentEvt);
+    profileName.textContent = profileNameInput.value;
+    profileJob.textContent = profileJobInput.value;
+    closePopup();
 }
 
-
-
-// function popupToggle(evt) {
-//   let currentPopup;
-//   switch (evt.target) {
-//     case addCardBtn:
-//       currentPopup = addCardPopup;
-//       break;
-//     case profileEditBtn:
-//       currentPopup = editProfilePopup;
-//       break;
-//     case editProfileCloseBtn:
-//       currentPopup = editProfilePopup;
-//       break;
-//     case editProfileForm:
-//       currentPopup = editProfilePopup;
-//   }
-//   currentPopup.classList.toggle('popup_opened');
-// }
-// ______________________________________
-
+function cardFormSubmitHandler (evt) {
+  evt.preventDefault();
+  addCard(cardNameInput.value, cardLinkInput.value);
+  cardLinkInput.value = '';
+  cardNameInput.value = '';
+  closePopup();
+}
