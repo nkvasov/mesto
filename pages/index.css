@@ -9,5 +9,6 @@
 @import url(../blocks/add-btn/add-btn.css);
 @import url(../blocks/cards/cards.css);
 @import url(../blocks/card/card.css);
+@import url(../blocks/card/__like-btn/_enabled/card__like-btn_enabled.css);
 
 @import url(../blocks/footer/footer.css);
