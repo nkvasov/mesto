@@ -22,7 +22,7 @@ const cardsContainer = document.querySelector('.cards__container'); // секц�
 // массив карточек
 const initialCards = [
   {
-      name: 'Архыз',
+      name: 'Архыз ',
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   },
   {
@@ -90,7 +90,21 @@ function addCardListeners(card) {
   card.querySelector('.card__image').addEventListener('click', openImagePopup);
 }
 
-
+function openImagePopup(evt) {
+  const card = evt.target.closest('.card');
+  const imagePopup = document.querySelector('.image-popup-template').content.cloneNode(true);
+  imagePopup.querySelector('.image-popup__image').src = evt.target.src;
+  imagePopup.querySelector('.image-popup__image').alt = evt.target.alt;
+  imagePopup.querySelector('.image-popup__caption').textContent = card.querySelector('.card__title').textContent;
+  imagePopup.querySelector('.image-popup__close-btn').addEventListener('click', () => {
+    document.querySelector('.image-popup').remove();
+  });
+  document.querySelector('.content').append(imagePopup);
+  // let width = document.querySelector('.image-popup__image').offsetWidth;
+  // console.log(width);
+  // document.querySelector('.image-popup__caption').style.width = `${width}px`;
+  // console.log(document.querySelector('.image-popup__caption').offsetWidth);
+}
 
 // function popupToggle(evt) {
 //   evt.target.closest('.popup').classList.toggle('popup_opened');
