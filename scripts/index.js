@@ -22,7 +22,7 @@ const cardsContainer = document.querySelector('.cards__container'); // секц�
 // массив карточек
 const initialCards = [
   {
-      name: 'Архыз ',
+      name: 'Архыз',
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   },
   {
@@ -34,7 +34,7 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
   },
   {
-      name: 'Камчатка',
+      name: 'Камчатка бла бла Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam delectus quasi obcaecati quisquam. A alias tenetur nemo! Quas illo nesciunt culpa, quae et cumque, deserunt, nobis sapiente beatae officiis dolore! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto veniam in nostrum facere, repudiandae velit soluta, alias porro fugit odio nisi, quo omnis explicabo iste laboriosam mollitia nam voluptas dolores!',
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
   },
   {
@@ -100,10 +100,11 @@ function openImagePopup(evt) {
     document.querySelector('.image-popup').remove();
   });
   document.querySelector('.content').append(imagePopup);
-  // let width = document.querySelector('.image-popup__image').offsetWidth;
-  // console.log(width);
-  // document.querySelector('.image-popup__caption').style.width = `${width}px`;
-  // console.log(document.querySelector('.image-popup__caption').offsetWidth);
+  // document.querySelector('.image-popup__caption').offsetWidth = document.querySelector('.image-popup__image').offsetWidth;
+  let width = document.querySelector('.image-popup__image').offsetWidth;
+  console.log(width);
+  document.querySelector('.image-popup__caption').style.width = `${width}px`;
+  console.log(document.querySelector('.image-popup__caption').offsetWidth);
 }
 
 // function popupToggle(evt) {

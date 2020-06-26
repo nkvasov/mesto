@@ -1,6 +1,5 @@
 .image-popup__container {
   position: relative;
   background-color: aqua;
-  width: max-content;
-  /* max-width: 75vw; */
+  max-width: 75vw;
 }
