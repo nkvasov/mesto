@@ -8,8 +8,8 @@ const addCardBtn = profile.querySelector('.add-btn');
 // Элементы попапа "Редактирование профиля"
 const profileForm = document.forms['edit-profile'];
 const profilePopup = profileForm.closest('.popup');
-const profileNameInput = profileForm.elements['profile-name']; // поле ввода имени Профиля
-const profileJobInput = profileForm.elements['profile-description'] ; // поле ввода описания Профиля
+const profileNameInput = profileForm.elements['profile-name'];
+const profileJobInput = profileForm.elements['profile-description'];
 
 // Элементы попапа "Добавление карточки"
 const cardForm = document.forms['add-card'];
@@ -77,7 +77,7 @@ function addCard(cardTitle, cardLink) {
 function addCardListeners(card) {
   card.querySelector('.card__trash-btn').addEventListener('click', deleteCard);
   card.querySelector('.card__like-btn').addEventListener('click', toggleLikeCard);
-  card.querySelector('.card__image').addEventListener('click', openImagePopup);
+  card.querySelector('.card__image').addEventListener('click', openImage);
 }
 
 function deleteCard(evt) {
@@ -89,17 +89,26 @@ function toggleLikeCard(evt) {
 }
 
 // Функция клонирует попап для картинки по шаблону, заполянет контентом и размещает на странице.
-function openImagePopup(evt) {
-  const card = evt.target.closest('.card');
-  const imagePopup = document.querySelector('.image-popup-template').content.cloneNode(true);
-  imagePopup.querySelector('.image-popup__image').src = evt.target.src;
-  imagePopup.querySelector('.image-popup__image').alt = evt.target.alt;
-  imagePopup.querySelector('.image-popup__caption').textContent = card.querySelector('.card__title').textContent;
-  imagePopup.querySelector('.image-popup__close-btn').addEventListener('click', () => {
-    document.querySelector('.image-popup').remove();
-  });
-  document.querySelector('.content').append(imagePopup);
-}
+// function openImagePopup(evt) {
+//   const card = evt.target.closest('.card');
+//   const imagePopup = document.querySelector('.image-popup-template').content.cloneNode(true);
+//   imagePopup.querySelector('.image-popup__image').src = evt.target.src;
+//   // imagePopup.querySelector('.image-popup__image').alt = evt.target.alt;
+//   imagePopup.querySelector('.image-popup__caption').textContent = card.querySelector('.card__title').textContent;
+//   imagePopup.querySelector('.image-popup__close-btn').addEventListener('click', () => {
+//     document.querySelector('.image-popup').classList.remove('image-popup_opened');
+//     setTimeout(() => {
+//       currentPopup.remove();
+//       currentPopup = null;
+//     }, 500);
+//   });
+//   document.querySelector('.content').append(imagePopup);
+//   currentPopup = document.querySelector('.image-popup');
+//   setTimeout(() => {
+//     currentPopup.classList.add('image-popup_opened');
+//   }, 1);
+// }
+
 
 
 function openPopup(evt) {
@@ -120,6 +129,9 @@ function setCurrentPopup(evt) {
     currentPopup = profilePopup;
   } else if (evt.target === addCardBtn) {
     currentPopup = cardPopup;
+  } else if (evt.target.classList.contains('card__image')) {
+    currentPopup = document.querySelector('.popup_content_image');
+    alert(currentPopup);
   }
 }
 
@@ -134,12 +146,19 @@ function editProfile(evt) {
   openPopup(currentEvt);
 }
 
+function openImage(evt) {
+  alert(evt);
+  const currentEvt = evt;
+
+  openPopup(currentEvt);
+}
+
 function formSubmitHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 // Так мы можем определить свою логику отправки.
-    profileName.textContent = profileNameInput.value;
-    profileJob.textContent = profileJobInput.value;
-    closePopup();
+  profileName.textContent = profileNameInput.value;
+  profileJob.textContent = profileJobInput.value;
+  closePopup();
 }
 
 function cardFormSubmitHandler (evt) {
