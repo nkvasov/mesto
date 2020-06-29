@@ -22,60 +22,20 @@ const figurePopup = document.querySelector('.popup_content_figure');
 const figureCaption = figurePopup.querySelector('.figure__caption');
 const figureImage = figurePopup.querySelector('.figure__image');
 
-// Открытый попап
-let currentPopup = null;
-
 // Секция карточек на странице
 const cardsContainer = document.querySelector('.cards__container');
 
-// Исходный массив карточек
-const initialCards = [
-  {
-      name: 'Архыз',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-      name: 'Челябинская область',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-      name: 'Иваново',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-      name: 'Камчатка бла бла Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam delectus quasi obcaecati quisquam. A alias tenetur nemo! Quas illo nesciunt culpa, quae et cumque, deserunt, nobis sapiente beatae officiis dolore! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto veniam in nostrum facere, repudiandae velit soluta, alias porro fugit odio nisi, quo omnis explicabo iste laboriosam mollitia nam voluptas dolores!',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-      name: 'Холмогорский район',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-      name: 'Байкал',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-// заполняем секцию карточками
-initialCards.forEach(card => {
-  addCard(card.name, card.link);
-})
 
-profileEditBtn.addEventListener('click', editProfile); // обработка нажатия кнопки редактирования профиля
 
-addCardBtn.addEventListener('click', openPopup);
 
-profileForm.addEventListener('submit', formSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
-
-cardForm.addEventListener('submit', cardFormSubmitHandler);
-
-// Функция клонирует карточку по шаблону, заполняет значениями и добавляет на страницу.
-function addCard(cardTitle, cardLink) {
+// Функция создает карточку по шаблону, заполняет значениями, навешивает обработчики на кнопки и возвращает эту карточку.
+function generateCard(cardData) {
   const newCard = document.querySelector('.card-template').content.cloneNode(true);
-  newCard.querySelector('.card__title').textContent = cardTitle;
-  newCard.querySelector('.card__image').src = cardLink;
-  newCard.querySelector('.card__image').alt = 'фото ' + cardTitle ;
+  newCard.querySelector('.card__title').textContent = cardData.name;
+  newCard.querySelector('.card__image').src = cardData.link;
+  newCard.querySelector('.card__image').alt = 'фото ' + cardData.name ;
   addCardListeners(newCard);
-  cardsContainer.prepend(newCard);
+  return newCard;
 }
 
 // Функция навешивает обработчики событий на карточку
@@ -93,59 +53,90 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
-// Функция открывает нужный попап и навешивает обработчик на кнопку закрытия
-function openPopup(evt) {
-  setCurrentPopup(evt);
-  popupToggle();
-  currentPopup.querySelector('.close-btn').addEventListener('click', closePopup);
+// Функция добавляет на страницу карточку.
+function addCard(container, cardData) {
+  const newCard = generateCard(cardData);
+  container.prepend(newCard);
 }
 
-function closePopup() {
-  popupToggle();
-  currentPopup = null;
+
+// заполняем секцию карточками
+initialCards.forEach(cardData => {
+  addCard(cardsContainer, cardData);
+})
+
+
+
+
+
+profileEditBtn.addEventListener('click', editProfile); // обработка нажатия кнопки редактирования профиля
+
+addCardBtn.addEventListener('click', () => {
+  togglePopup(cardPopup);
+});
+
+profileForm.addEventListener('submit', profileFormSubmitHandler); // обработка нажатия кнопки "Cохранить" попап или клавиши Enter
+
+cardForm.addEventListener('submit', cardFormSubmitHandler);
+
+
+
+profilePopup.querySelector('.close-btn').addEventListener('click', () => {
+  togglePopup(profilePopup);
+});
+
+cardPopup.querySelector('.close-btn').addEventListener('click', () => {
+  togglePopup(cardPopup);
+})
+
+figurePopup.querySelector('.close-btn').addEventListener('click', () => {
+  togglePopup(figurePopup);
+})
+
+// Функция меняет видимость заданного попапа.
+function togglePopup(popup) {
+  popup.classList.toggle('popup_opened');
 }
 
-// Функция устанавливает текущий попап в зависимости от источника события
-function setCurrentPopup(evt) {
-  if (evt.target === profileEditBtn) {
-    currentPopup = profilePopup;
-  } else if (evt.target === addCardBtn) {
-    currentPopup = cardPopup;
-  } else if (evt.target.classList.contains('card__image')) {
-    currentPopup = figurePopup;
-  }
-}
-
-function popupToggle() {
-  currentPopup.classList.toggle('popup_opened');
-}
-
-function editProfile(evt) {
-  const currentEvt = evt;
+// Функция открывает попап редактирования профиля, предварительно заполняет поля значениями со страницы
+function editProfile() {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
-  openPopup(currentEvt);
+  togglePopup(profilePopup);
 }
 
+// Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
 function openImage(evt) {
   const currentCard = evt.target.closest('.card');
   figureImage.src = evt.target.src;
   figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
-  openPopup(evt);
+  togglePopup(figurePopup);
 }
 
-function formSubmitHandler (evt) {
+// Функция размещает введенные данные на страницу и закрывает форму.
+function profileFormSubmitHandler(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 // Так мы можем определить свою логику отправки.
   profileName.textContent = profileNameInput.value;
   profileJob.textContent = profileJobInput.value;
-  closePopup();
+  togglePopup(profilePopup);
 }
 
-function cardFormSubmitHandler (evt) {
-  evt.preventDefault();
-  addCard(cardNameInput.value, cardLinkInput.value);
-  cardLinkInput.value = '';
-  cardNameInput.value = '';
-  closePopup();
+// Функция возвращает объект данных карточки с двумя свойствами. Значения свойств вводятся пользователем.
+function makeCardData() {
+  const newCardObject = {};
+  newCardObject.name = cardNameInput.value;
+  newCardObject.link = cardLinkInput.value;
+  return newCardObject;
 }
+
+// Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
+function cardFormSubmitHandler(evt) {
+  evt.preventDefault ();
+  addCard(cardsContainer, makeCardData());
+  cardNameInput.value = '';
+  cardLinkInput.value = '';
+  togglePopup(cardPopup);
+}
+
+
