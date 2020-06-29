@@ -4,14 +4,25 @@
   border: none;
   box-shadow: none;
   background-color: transparent;
+  /* background-color: purple; */
   background-image: url(../../images/CloseIcon.svg);
   background-position: center;
-  width: 41px;
-  height: 41px;
+  background-size: cover;
+  width: 58px;
+  height: 58px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .close-btn:hover {
   opacity: 0.6;
+}
+
+
+@media screen and (max-width: 525px) {
+  .close-btn {
+    width: 48px;
+    height: 48px;
+    /* object-fit: contain; */
+  }
 }

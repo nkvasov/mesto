@@ -9,6 +9,7 @@
   margin: 0;
   padding: 34px 36px 36px;
   max-width: 430px;
+  min-width: 240px;
   width: calc(100% - 80px);
   background-color: #ffffff;
   color: #000000;
@@ -26,6 +27,6 @@
 
 @media screen and (max-width: 525px) {
   .form {
-    padding: 20px 16px;
+    padding: 30px 20px;
   }
 }

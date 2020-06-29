@@ -2,13 +2,13 @@
   display: block;
   width: 142px;
   height: 34px;
-  object-fit: cover;
+  /* object-fit: cover; */
 
 }
 
 @media screen and (max-width: 525px) {
   .header__logo {
     width: 104px;
-    object-fit: contain;
+    /* object-fit: contain; */
   }
 }
