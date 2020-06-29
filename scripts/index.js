@@ -17,6 +17,11 @@ const cardPopup = cardForm.closest('.popup');
 const cardNameInput = cardForm.elements['card-name'];
 const cardLinkInput = cardForm.elements['card-link'];
 
+// Элементы попапа картинки
+const figurePopup = document.querySelector('.popup_content_figure');
+const figureCaption = figurePopup.querySelector('.figure__caption');
+const figureImage = figurePopup.querySelector('.figure__image');
+
 // Открытый попап
 let currentPopup = null;
 
@@ -88,34 +93,11 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
-// Функция клонирует попап для картинки по шаблону, заполянет контентом и размещает на странице.
-// function openImagePopup(evt) {
-//   const card = evt.target.closest('.card');
-//   const imagePopup = document.querySelector('.image-popup-template').content.cloneNode(true);
-//   imagePopup.querySelector('.image-popup__image').src = evt.target.src;
-//   // imagePopup.querySelector('.image-popup__image').alt = evt.target.alt;
-//   imagePopup.querySelector('.image-popup__caption').textContent = card.querySelector('.card__title').textContent;
-//   imagePopup.querySelector('.image-popup__close-btn').addEventListener('click', () => {
-//     document.querySelector('.image-popup').classList.remove('image-popup_opened');
-//     setTimeout(() => {
-//       currentPopup.remove();
-//       currentPopup = null;
-//     }, 500);
-//   });
-//   document.querySelector('.content').append(imagePopup);
-//   currentPopup = document.querySelector('.image-popup');
-//   setTimeout(() => {
-//     currentPopup.classList.add('image-popup_opened');
-//   }, 1);
-// }
-
-
-
+// Функция открывает нужный попап и навешивает обработчик на кнопку закрытия
 function openPopup(evt) {
-  const currentEvent = evt;
-  setCurrentPopup(currentEvent);
+  setCurrentPopup(evt);
   popupToggle();
-  currentPopup.querySelector('.popup__close-btn').addEventListener('click', closePopup);
+  currentPopup.querySelector('.close-btn').addEventListener('click', closePopup);
 }
 
 function closePopup() {
@@ -123,15 +105,14 @@ function closePopup() {
   currentPopup = null;
 }
 
-// Функция устанавливает текущий попап в зависимости от нажатой кнопки
+// Функция устанавливает текущий попап в зависимости от источника события
 function setCurrentPopup(evt) {
   if (evt.target === profileEditBtn) {
     currentPopup = profilePopup;
   } else if (evt.target === addCardBtn) {
     currentPopup = cardPopup;
   } else if (evt.target.classList.contains('card__image')) {
-    currentPopup = document.querySelector('.popup_content_image');
-    alert(currentPopup);
+    currentPopup = figurePopup;
   }
 }
 
@@ -147,10 +128,10 @@ function editProfile(evt) {
 }
 
 function openImage(evt) {
-  alert(evt);
-  const currentEvt = evt;
-
-  openPopup(currentEvt);
+  const currentCard = evt.target.closest('.card');
+  figureImage.src = evt.target.src;
+  figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
+  openPopup(evt);
 }
 
 function formSubmitHandler (evt) {

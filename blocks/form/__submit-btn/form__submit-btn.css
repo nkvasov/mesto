@@ -1,5 +1,5 @@
 
-.popup__submit-btn {
+.form__submit-btn {
   width: 100%;
   border-radius: 2px;
   background-color: #000000;
@@ -15,6 +15,6 @@
   transition: 0.2s;
 }
 
-.popup__submit-btn:hover {
+.form__submit-btn:hover {
   opacity: 0.8;
 }
