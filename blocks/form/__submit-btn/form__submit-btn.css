@@ -27,3 +27,8 @@
     padding-bottom: 14px;
   }
 }
+
+.form__submit-btn:disabled {
+  background-color: grey;
+  pointer-events: none;
+}

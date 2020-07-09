@@ -146,3 +146,5 @@ cardPopup.querySelector('.close-btn').addEventListener('click', () => {
 figurePopup.querySelector('.close-btn').addEventListener('click', () => {
   togglePopup(figurePopup);
 })
+
+
