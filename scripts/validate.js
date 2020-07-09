@@ -1,57 +1,49 @@
-function enableValidation(validationSet) {
-
+const mesto = {
+  // formSelector: '.popup__form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit-btn',
+  // inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: '.form__input-error',
+  errorClass: 'form__input-error_active'
 }
 
-function showError(inputElement, errorMessage) {
-  // лучше так, или можно через 'nextElementSibling', как в функции hideError
-  const errorElement = inputElement.parentElement.querySelector('.form__input-error');
+function showError(inputElement, errorMessage, page) {
+  // надёжнее так выбрать errorElement, или можно через 'nextElementSibling', как в функции hideError
+  const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('form__input-error_active');
+  errorElement.classList.add(page.errorClass);
 }
 
-function hideError(inputElement) {
+function hideError(inputElement, page) {
+  // как здесь
   const errorElement = inputElement.nextElementSibling;
-  errorElement.classList.remove('form__input-error_active');
+  errorElement.classList.remove(page.errorClass);
   errorElement.textContent = '';
 }
 
-function toggleButtonState(buttonElement) {
-  buttonElement.classList.toggle('button_inactive');
-}
+// function toggleButtonState(buttonElement) {
+//   buttonElement.classList.toggle('button_inactive');
+// }
 
 // Проверяет валидность одного поля ввода
-function checkInputValidity(formElement, inputElement) {
+function checkInputValidity(inputElement, page) {
   if (inputElement.validity.valid) {
-    hideError(inputElement);
+    hideError(inputElement, page);
   } else {
-    showError(inputElement, inputElement.validationMessage);
+    showError(inputElement, inputElement.validationMessage, page);
   }
 }
 
-
 // Массив полей ввода некоторого объекта
-function returnInputList(element) {
-  return Array.from(element.querySelectorAll('.form__input'));
+function returnInputList(element, page) {
+  return Array.from(element.querySelectorAll(page.inputSelector));
 }
 
-// Навешивает валидирующих слушателей на инпуты формы
-function addFormListeners(formElement) {
-  const submitBtnElement = formElement.querySelector('.form__submit-btn');
-  returnInputList(formElement).forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement);
-      setButtonState(formElement, submitBtnElement);
-    })
-  })
-}
 
-// function isValid(element) {
-//   element.validity.valid;
-// }
 
-// Возвращает true, если хотя бы одно из полей невалидно
-function hasInvalidInput(formElement) {
-  const inputList = returnInputList(formElement);
+// Возвращает true, если хотя бы одно из полей формы невалидно
+function hasInvalidInput(formElement, page) {
+  const inputList = returnInputList(formElement, page);
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   })
@@ -71,36 +63,35 @@ function enableElement(element) {
 }
 
 // Деактивирует или активирует кнопку Submit в зависимости от наличия/отсутствия невалидного поля ввода в форме
-function setButtonState(formElement, buttonElement) {
-  if (hasInvalidInput(formElement)) {
+function setButtonState(formElement, buttonElement, page) {
+  if (hasInvalidInput(formElement, page)) {
     disableElement(buttonElement);
   } else {
     enableElement(buttonElement);
   }
 }
 
-
-// addFormListeners(profileForm);
-// addFormListeners(cardForm);
-
-
-const mesto = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}
-
-function enableValidation() {
-  const formList = Array.from(document.forms);
-  formList.forEach((formElement) => {
-    addFormListeners(formElement);
+// Навешивает валидирующих слушателей на инпуты формы
+function addFormListeners(formElement, page) {
+  const submitBtnElement = formElement.querySelector(page.submitButtonSelector);
+  returnInputList(formElement, page).forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(inputElement, page);
+      setButtonState(formElement, submitBtnElement, page);
+    })
   })
 }
 
-enableValidation();
+
+
+function enableValidation(page) {
+  const formList = Array.from(document.forms);
+  formList.forEach((formElement) => {
+    addFormListeners(formElement, page);
+  })
+}
+
+enableValidation(mesto);
 
 
 

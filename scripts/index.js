@@ -42,12 +42,35 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
+// Обработчик нажатия клавиши ESC
+function closeOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
+}
+
+// Открывает указанный попап и навешивает обрботчик ESC
+function openPopup(popup) {
+  togglePopup(popup);
+  document.addEventListener('keydown', closeOnEsc);
+}
+
+// Закрывает указанный попап, удаляет обработчик ESC и сбрасывает поля формы, если есть форма в попапе
+function closePopup(popup) {
+  togglePopup(popup);
+  if (popup.querySelector('.form')) {
+    popup.querySelector('.form').reset();
+  }
+  document.removeEventListener('keydown', closeOnEsc);
+}
+
 // Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
 function openImage(evt) {
   const currentCard = evt.target.closest('.card');
   figureImage.src = evt.target.src;
   figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
-  togglePopup(figurePopup);
+  openPopup(figurePopup);
 }
 
 // Функция навешивает обработчики событий на карточку
@@ -77,40 +100,32 @@ function addCard(container, cardData) {
 function editProfile() {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
-  togglePopup(profilePopup);
+  openPopup(profilePopup);
 }
 
 
 // Функция размещает введенные данные Профиля на страницу и закрывает форму.
 function profileFormSubmitHandler(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                                // Так мы можем определить свою логику отправки.
+  evt.preventDefault();
   profileName.textContent = profileNameInput.value;
   profileJob.textContent = profileJobInput.value;
-  togglePopup(profilePopup);
+  closePopup(profilePopup);
 }
 
-// Функция возвращает объект с двумя свойствами для генерации карточки . Значения свойств вводятся пользователем.
-function makeCardData() {
-  const newCardData = {};
-  newCardData.name = cardNameInput.value;
-  newCardData.link = cardLinkInput.value;
-  return newCardData;
-}
-
-// Функция очищает текстовые поля указанной формы
-function clearFormInputs(form) {
-  form.querySelectorAll('[type="text"]').forEach(input => {
-    input.value = '';
-  });
+// Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
+function makeCardDataFromInput() {
+  return {
+    name: cardNameInput.value,
+    link: cardLinkInput.value,
+  }
 }
 
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
 function cardFormSubmitHandler(evt) {
   evt.preventDefault ();
-  addCard(cardsContainer, makeCardData());
-  clearFormInputs(cardForm);
-  togglePopup(cardPopup);
+  addCard(cardsContainer, makeCardDataFromInput());
+  cardForm.reset();
+  closePopup(cardPopup);
 }
 
 // заполняем секцию карточками
@@ -123,7 +138,7 @@ profileEditBtn.addEventListener('click', editProfile);
 
 // обработка нажатие кнопки Добавления карточки
 addCardBtn.addEventListener('click', () => {
-  togglePopup(cardPopup);
+  openPopup(cardPopup);
 });
 
 // обработка события submit формы Профиля
@@ -136,15 +151,15 @@ cardForm.addEventListener('submit', cardFormSubmitHandler);
 
 // Обработка закрывающих кнопок поапов
 profilePopup.querySelector('.close-btn').addEventListener('click', () => {
-  togglePopup(profilePopup);
+  closePopup(profilePopup);
 });
 
 cardPopup.querySelector('.close-btn').addEventListener('click', () => {
-  togglePopup(cardPopup);
+  closePopup(cardPopup);
 })
 
 figurePopup.querySelector('.close-btn').addEventListener('click', () => {
-  togglePopup(figurePopup);
+  closePopup(figurePopup);
 })
 
 
