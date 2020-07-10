@@ -14,14 +14,14 @@ const mesto = {
 }
 
 function showError(inputElement, errorMessage, page) {
-  // надёжнее так выбрать errorElement, или можно через 'nextElementSibling', как в функции hideError
+  // ???надёжнее так выбрать errorElement, или можно через 'nextElementSibling', как в функции hideError???
   const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(page.errorClass);
 }
 
 function hideError(inputElement, page) {
-  // как здесь
+  //??? как здесь ???
   const errorElement = inputElement.nextElementSibling;
   errorElement.classList.remove(page.errorClass);
   errorElement.textContent = '';
@@ -41,8 +41,6 @@ function checkInputValidity(inputElement, page) {
 function returnInputList(element, page) {
   return Array.from(element.querySelectorAll(page.inputSelector));
 }
-
-
 
 // Возвращает true, если хотя бы одно из полей формы невалидно
 function hasInvalidInput(formElement, page) {

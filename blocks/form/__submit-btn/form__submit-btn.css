@@ -29,6 +29,9 @@
 }
 
 .form__submit-btn:disabled {
-  background-color: grey;
+  border: 1px solid black;
+  background-color: white;
   pointer-events: none;
+  color: black;
+  opacity: 0.2;
 }

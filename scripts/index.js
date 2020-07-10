@@ -50,7 +50,16 @@ function closeOnEsc(evt) {
   }
 }
 
-// Открывает указанный попап и навешивает обрботчик ESC
+// Обработчик клика по оверлею
+function closeOnOverlayClick(evt) {
+  const popup = evt.currentTarget;
+  if (evt.target === evt.currentTarget) {
+    closePopup(popup);
+  }
+}
+
+// Открывает указанный попап и навешивает обработчик ESC
+// из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
 function openPopup(popup) {
   togglePopup(popup);
   document.addEventListener('keydown', closeOnEsc);
@@ -59,8 +68,9 @@ function openPopup(popup) {
 // Закрывает указанный попап, удаляет обработчик ESC и сбрасывает поля формы, если есть форма в попапе
 function closePopup(popup) {
   togglePopup(popup);
-  if (popup.querySelector('.form')) {
-    popup.querySelector('.form').reset();
+  const popupForm = popup.querySelector('.form');
+  if (popupForm) {
+    popupForm.reset();
   }
   document.removeEventListener('keydown', closeOnEsc);
 }
@@ -122,10 +132,20 @@ function makeCardDataFromInput() {
 
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
 function cardFormSubmitHandler(evt) {
-  evt.preventDefault ();
+  evt.preventDefault();
   addCard(cardsContainer, makeCardDataFromInput());
-  cardForm.reset();
   closePopup(cardPopup);
+}
+
+// Добавляет попапам функции закрытия по кнопке и по оверлею
+function addPopupListeners() {
+  const popupList = Array.from(document.querySelectorAll('.popup'));
+  popupList.forEach((popupElement) => {
+    popupElement.addEventListener('click', closeOnOverlayClick)
+    popupElement.querySelector('.close-btn').addEventListener('click', () => {
+      closePopup(popupElement);
+    })
+  })
 }
 
 // заполняем секцию карточками
@@ -147,19 +167,4 @@ profileForm.addEventListener('submit', profileFormSubmitHandler);
 // обработка события submit формы Карточки
 cardForm.addEventListener('submit', cardFormSubmitHandler);
 
-
-
-// Обработка закрывающих кнопок поапов
-profilePopup.querySelector('.close-btn').addEventListener('click', () => {
-  closePopup(profilePopup);
-});
-
-cardPopup.querySelector('.close-btn').addEventListener('click', () => {
-  closePopup(cardPopup);
-})
-
-figurePopup.querySelector('.close-btn').addEventListener('click', () => {
-  closePopup(figurePopup);
-})
-
-
+addPopupListeners();
