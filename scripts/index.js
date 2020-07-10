@@ -25,6 +25,8 @@ const figureImage = figurePopup.querySelector('.figure__image');
 // Секция карточек на странице
 const cardsContainer = document.querySelector('.cards__container');
 
+// Шаблон карточки
+const cardTemplate = document.querySelector('.card-template');
 
 
 // Функция меняет видимость заданного попапа.
@@ -92,7 +94,7 @@ function addCardListeners(card) {
 
 // Функция создает карточку по шаблону, заполняет значениями, навешивает обработчики на кнопки и возвращает эту карточку.
 function generateCard(cardData) {
-  const newCard = document.querySelector('.card-template').content.cloneNode(true);
+  const newCard = cardTemplate.content.cloneNode(true);
   newCard.querySelector('.card__title').textContent = cardData.name;
   newCard.querySelector('.card__image').src = cardData.link;
   newCard.querySelector('.card__image').alt = 'фото ' + cardData.name ;
