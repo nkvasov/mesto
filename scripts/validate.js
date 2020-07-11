@@ -6,7 +6,7 @@ const mesto = {
   inputErrorClass: '.form__input-error',
   errorClass: 'form__input-error_active',
 
-  // добавил в объект свойства (имена форм и классы кнопок их открывающих)
+  // имена форм и классы кнопок их открывающих)
   formName1: 'edit-profile',
   formBtnClass1: '.profile__edit-btn',
   formName2: 'add-card',
@@ -14,19 +14,16 @@ const mesto = {
 }
 
 function showError(inputElement, errorMessage, page) {
-  // ???надёжнее так выбрать errorElement, или можно через 'nextElementSibling', как в функции hideError???
   const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(page.errorClass);
 }
 
 function hideError(inputElement, page) {
-  //??? как здесь ???
-  const errorElement = inputElement.nextElementSibling;
+  const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
   errorElement.classList.remove(page.errorClass);
   errorElement.textContent = '';
 }
-
 
 // Проверяет валидность одного поля ввода и показывает/убирает сообщение об ошибке
 function checkInputValidity(inputElement, page) {
@@ -93,7 +90,6 @@ function checkFormValidity(formElement, page) {
   setButtonState(formElement, submitBtnElement, page);
 }
 
-
 function enableValidation(page) {
   const formList = Array.from(document.forms);
   const form1 = document.forms[page.formName1];
@@ -105,7 +101,7 @@ function enableValidation(page) {
     addFormListeners(formElement, page);
   })
   // Эти слушатели вешаются на кнопки открытия форм. Они проверяют валидность формы при каждом открытии.
-  // И устанавливают правильное состояние кнопки submit и ошибок инпутов до события input.
+  // И устанавливают правильное состояние кнопки submit и ошибок инпутов до события input, но после заполнения формы скриптом.
   // Иначе при открытии формы могло остаться неправильное состояние элементов от события input при прошлом открытии, например при выходе через ESC
   openBtn1.addEventListener('click', () => {
     checkFormValidity(form1, page);
