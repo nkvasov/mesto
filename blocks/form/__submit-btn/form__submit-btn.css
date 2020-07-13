@@ -27,11 +27,3 @@
     padding-bottom: 14px;
   }
 }
-
-.form__submit-btn:disabled {
-  border: 1px solid black;
-  background-color: white;
-  pointer-events: none;
-  color: black;
-  opacity: 0.2;
-}

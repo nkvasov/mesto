@@ -1,9 +1,9 @@
 const mesto = {
-  // formSelector: '.popup__form',
+  formSelector: '.form',
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit-btn',
-  // inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: '.form__input-error',
+  inactiveButtonClass: 'form__submit-btn_disabled',
+  inputErrorClass: 'form__input-error',
   errorClass: 'form__input-error_active',
 
   // имена форм и классы кнопок их открывающих)
@@ -14,13 +14,15 @@ const mesto = {
 }
 
 function showError(inputElement, errorMessage, page) {
-  const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
+  const formElement = inputElement.closest(page.formSelector);
+  const errorElement = formElement.querySelector(`.form__input-error_origin_${inputElement.id}`);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(page.errorClass);
 }
 
 function hideError(inputElement, page) {
-  const errorElement = inputElement.parentElement.querySelector(page.inputErrorClass);
+  const formElement = inputElement.closest(page.formSelector);
+  const errorElement = formElement.querySelector(`.form__input-error_origin_${inputElement.id}`);
   errorElement.classList.remove(page.errorClass);
   errorElement.textContent = '';
 }
@@ -47,14 +49,16 @@ function hasInvalidInput(formElement, page) {
   })
 }
 
-// Добавляют/удаляют атрибут 'disabled' с элемента, если еще не добавлен/удален
-function disableElement(element) {
+// Добавляют/удаляют атрибут 'disabled' с элемента, если еще не добавлен/удален и добавляют/удаляют соответствующий класс
+function disableElement(element, page) {
+  element.classList.add(page.inactiveButtonClass);
   if (!element.hasAttribute('disabled')) {
     element.setAttribute('disabled', true);
   }
 }
 
-function enableElement(element) {
+function enableElement(element, page) {
+  element.classList.remove(page.inactiveButtonClass);
   if (element.hasAttribute('disabled')) {
     element.removeAttribute('disabled');
   }
@@ -63,9 +67,9 @@ function enableElement(element) {
 // Деактивирует или активирует кнопку Submit в зависимости от наличия/отсутствия невалидного поля ввода в форме
 function setButtonState(formElement, buttonElement, page) {
   if (hasInvalidInput(formElement, page)) {
-    disableElement(buttonElement);
+    disableElement(buttonElement, page);
   } else {
-    enableElement(buttonElement);
+    enableElement(buttonElement, page);
   }
 }
 
@@ -91,18 +95,22 @@ function checkFormValidity(formElement, page) {
 }
 
 function enableValidation(page) {
-  const formList = Array.from(document.forms);
+  // Массив форм страницы
+  const formList = Array.from(document.querySelectorAll(page.formSelector));
+  // Навешиваем в цикле функции, проверяющие валидность форм во время работы с ними
+  formList.forEach((formElement) => {
+    addFormListeners(formElement, page);
+  })
+
+  // Переменные ниже создаются на основе данных, полученных от объекта 'page'.
+  // Связь между формой и кнопкой, которая ее открывает, строится на основе этих данных
+  // (page.formName1 соответствует page.formBtnClass1 и т.д.).
   const form1 = document.forms[page.formName1];
   const form2 = document.forms[page.formName2];
   const openBtn1 = document.querySelector(page.formBtnClass1);
   const openBtn2 = document.querySelector(page.formBtnClass2);
 
-  formList.forEach((formElement) => {
-    addFormListeners(formElement, page);
-  })
-  // Эти слушатели вешаются на кнопки открытия форм. Они проверяют валидность формы при каждом открытии.
-  // И устанавливают правильное состояние кнопки submit и ошибок инпутов до события input, но после заполнения формы скриптом.
-  // Иначе при открытии формы могло остаться неправильное состояние элементов от события input при прошлом открытии, например при выходе через ESC
+  //  Эти слушатели обеспечивают открытие формы в валидном состоянии
   openBtn1.addEventListener('click', () => {
     checkFormValidity(form1, page);
   })

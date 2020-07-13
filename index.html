@@ -42,23 +42,23 @@
       </section>
 
       <section class="popup popup_content_form">
-        <form class="form" name="edit-profile" novalidate>
+        <form class="form popup__container" name="edit-profile" novalidate>
           <h3 class="form__title">Редактировать профиль</h3>
           <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
           <div class="form__field">
-            <input class="form__input" type="text" name="profile-name" placeholder="Имя" required minlength="2" maxlength="40">
-            <span class="form__input-error"></span>
+            <input class="form__input" id="profile-name" type="text" name="profile-name" placeholder="Имя" required minlength="2" maxlength="40">
+            <span class="form__input-error form__input-error_origin_profile-name">ошибка</span>
           </div>
           <div class="form__field">
-            <input class="form__input" type="text" name="profile-description" placeholder="Описание" required minlength="2" maxlength="200">
-            <span class="form__input-error"></span>
+            <input class="form__input" id="profile-description" type="text" name="profile-description" placeholder="Описание" required minlength="2" maxlength="200">
+            <span class="form__input-error form__input-error_origin_profile-description"></span>
           </div>
           <button class="form__submit-btn" type="submit">Сохранить</button>
         </form>
       </section>
 
       <section class="popup popup_content_figure">
-        <figure class="figure">
+        <figure class="figure popup__container">
           <button class="close-btn figure__close-btn" type="button" aria-label="Закрыть попап"></button>
           <img class="figure__image" src="#" alt="описание">
           <figcaption class="figure__caption">Подпись</figcaption>
@@ -66,16 +66,16 @@
       </section>
 
       <section class="popup popup_content_form">
-        <form class="form" name="add-card" novalidate>
+        <form class="form popup__container" name="add-card" novalidate>
           <h3 class="form__title">Новое место</h3>
           <button class="close-btn form__close-btn" type="reset" aria-label="Закрыть попап"></button>
           <div class="form__field">
-            <input class="form__input" type="text" name="card-name" placeholder="Название" required minlength="1" maxlength="30">
-            <span class="form__input-error"></span>
+            <input class="form__input" id="card-name" type="text" name="card-name" placeholder="Название" required minlength="1" maxlength="30">
+            <span class="form__input-error form__input-error_origin_card-name"></span>
           </div>
           <div class="form__field">
-            <input class="form__input" type="url" name="card-link" placeholder="Ссылка на картинку" required>
-            <span class="form__input-error"></span>
+            <input class="form__input" id="card-link" type="url" name="card-link" placeholder="Ссылка на картинку" required>
+            <span class="form__input-error form__input-error_origin_card-link"></span>
           </div>
           <button class="form__submit-btn" type="submit">Создать</button>
         </form>

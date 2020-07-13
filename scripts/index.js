@@ -63,6 +63,7 @@ function resetPopupForm(popup) {
 // Закрывает указанный попап, удаляет обработчик ESC
 function closePopup(popup) {
   togglePopup(popup);
+  resetPopupForm(popup);
   document.removeEventListener('keydown', closeOnEsc);
 }
 
@@ -71,7 +72,6 @@ function closeOnEsc(evt) {
   if (evt.key === 'Escape') {
     const popup = document.querySelector('.popup_opened');
     closePopup(popup);
-    resetPopupForm(popup);
   }
 }
 
@@ -79,18 +79,13 @@ function closeOnEsc(evt) {
 function closeOnOverlayClick(evt) {
   const popup = evt.currentTarget;
   closePopup(popup);
-  resetPopupForm(popup);
-  // if (evt.target === evt.currentTarget) {
-  //   closePopup(popup);
-  //   resetPopupForm(popup);
-  // }
 }
-
 
 // Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
 function openImage(evt) {
   const currentCard = evt.target.closest('.card');
   figureImage.src = evt.target.src;
+  figureImage.alt = evt.target.alt;
   figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
   openPopup(figurePopup);
 }
@@ -135,7 +130,7 @@ function profileFormSubmitHandler(evt) {
 }
 
 // Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
-function makeCardDataFromInput() {
+function getCardDataFromInput() {
   return {
     name: cardNameInput.value,
     link: cardLinkInput.value,
@@ -145,11 +140,11 @@ function makeCardDataFromInput() {
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
 function cardFormSubmitHandler(evt) {
   evt.preventDefault();
-  addCard(cardsContainer, makeCardDataFromInput());
+  addCard(cardsContainer, getCardDataFromInput());
   closePopup(cardPopup);
 }
 
-// Добавляет попапам функции закрытия по кнопке и по оверлею
+// Добавляет попапам функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
 function addPopupListeners() {
   const popupList = Array.from(document.querySelectorAll('.popup'));
   popupList.forEach((popupElement) => {
@@ -157,11 +152,14 @@ function addPopupListeners() {
     popupElement.querySelector('.close-btn').addEventListener('click', () => {
       closePopup(popupElement);
     })
+    popupElement.querySelector('.popup__container').addEventListener('click', (evt) => {
+      evt.stopPropagation();
+    })
   })
 }
 
 // заполняем секцию карточками
-initialCards.forEach(cardData => {
+initialCards.forEach((cardData) => {
   addCard(cardsContainer, cardData);
 })
 
@@ -176,19 +174,7 @@ addCardBtn.addEventListener('click', () => {
 // обработка события submit формы Профиля
 profileForm.addEventListener('submit', profileFormSubmitHandler);
 
-profileForm.addEventListener('click', (evt) => {
-  evt.stopPropagation();
-})
-
 // обработка события submit формы Карточки
 cardForm.addEventListener('submit', cardFormSubmitHandler);
-
-cardForm.addEventListener('click', (evt) => {
-  evt.stopPropagation();
-})
-
-figure.addEventListener('click', (evt) => {
-  evt.stopPropagation();
-})
 
 addPopupListeners();

@@ -11,9 +11,8 @@
 @import url(../blocks/card/card.css);
 @import url(../blocks/card/__like-btn/_enabled/card__like-btn_enabled.css);
 @import url(../blocks/footer/footer.css);
-/* @import url(../blocks/image-popup/image-popup.css); */
-/* @import url(../blocks/image-popup/_opened/image-popup_opened.css); */
 @import url(../blocks/form/form.css);
 @import url(../blocks/form/__input-error/_active/form__input-error_active.css);
+@import url(../blocks/form/__submit-btn/_disabled/form__submit-btn_disabled.css);
 @import url(../blocks/figure/figure.css);
 @import url(../blocks/close-btn/close-btn.css);
