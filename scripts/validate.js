@@ -6,11 +6,17 @@ const mesto = {
   inputErrorClass: 'form__input-error',
   errorClass: 'form__input-error_active',
 
-  // имена форм и классы кнопок их открывающих)
-  formName1: 'edit-profile',
-  formBtnClass1: '.profile__edit-btn',
-  formName2: 'add-card',
-  formBtnClass2: '.add-btn',
+  // имена форм и селекторы кнопок их открывающих передаем как массив объектов
+  formsData: [
+    {
+      name: 'edit-profile',
+      openBtnSelector: '.profile__edit-btn',
+    },
+    {
+      name: 'add-card',
+      openBtnSelector: '.add-btn',
+    }
+  ]
 }
 
 function showError(inputElement, errorMessage, page) {
@@ -95,28 +101,19 @@ function checkFormValidity(formElement, page) {
 }
 
 function enableValidation(page) {
-  // Массив форм страницы
-  const formList = Array.from(document.querySelectorAll(page.formSelector));
-  // Навешиваем в цикле функции, проверяющие валидность форм во время работы с ними
-  formList.forEach((formElement) => {
-    addFormListeners(formElement, page);
+  // перебираем переданный массив с данными о формах
+  page.formsData.forEach((formData) => {
+    const form = document.querySelector(`[name=${formData.name}]`);
+    const openBtn = document.querySelector(formData.openBtnSelector);
+    // На каждую форму навешиваем слушателей, которые проверяют валидность во время работы с формой
+    addFormListeners(form, page);
+    // Навешиваем слушатель на кнопку, открывающую форму:
+    // он проверяет валидность формы до начала работы с ней (события input)
+    openBtn.addEventListener('click', () => {
+      checkFormValidity(form, page);
+    })
   })
 
-  // Переменные ниже создаются на основе данных, полученных от объекта 'page'.
-  // Связь между формой и кнопкой, которая ее открывает, строится на основе этих данных
-  // (page.formName1 соответствует page.formBtnClass1 и т.д.).
-  const form1 = document.forms[page.formName1];
-  const form2 = document.forms[page.formName2];
-  const openBtn1 = document.querySelector(page.formBtnClass1);
-  const openBtn2 = document.querySelector(page.formBtnClass2);
-
-  //  Эти слушатели обеспечивают открытие формы в валидном состоянии
-  openBtn1.addEventListener('click', () => {
-    checkFormValidity(form1, page);
-  })
-  openBtn2.addEventListener('click', () => {
-    checkFormValidity(form2, page);
-  })
 }
 
 enableValidation(mesto);
