@@ -19,6 +19,7 @@ const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
 // Элементы попапа картинки
 const figurePopup = document.querySelector('.popup_content_figure');
+const figure = figurePopup.querySelector('.figure');
 const figureCaption = figurePopup.querySelector('.figure__caption');
 const figureImage = figurePopup.querySelector('.figure__image');
 
@@ -44,22 +45,6 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
-// Обработчик нажатия клавиши ESC
-function closeOnEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened');
-    closePopup(popup);
-  }
-}
-
-// Обработчик клика по оверлею
-function closeOnOverlayClick(evt) {
-  const popup = evt.currentTarget;
-  if (evt.target === evt.currentTarget) {
-    closePopup(popup);
-  }
-}
-
 // Открывает указанный попап и навешивает обработчик ESC
 // из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
 function openPopup(popup) {
@@ -67,15 +52,40 @@ function openPopup(popup) {
   document.addEventListener('keydown', closeOnEsc);
 }
 
-// Закрывает указанный попап, удаляет обработчик ESC и сбрасывает поля формы, если есть форма в попапе
-function closePopup(popup) {
-  togglePopup(popup);
+// Сбрасывает поля формы в попапе, если она существует в попапе
+function resetPopupForm(popup) {
   const popupForm = popup.querySelector('.form');
   if (popupForm) {
     popupForm.reset();
   }
+}
+
+// Закрывает указанный попап, удаляет обработчик ESC
+function closePopup(popup) {
+  togglePopup(popup);
   document.removeEventListener('keydown', closeOnEsc);
 }
+
+// Обработчик нажатия клавиши ESC
+function closeOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+    resetPopupForm(popup);
+  }
+}
+
+// Обработчик клика по оверлею
+function closeOnOverlayClick(evt) {
+  const popup = evt.currentTarget;
+  closePopup(popup);
+  resetPopupForm(popup);
+  // if (evt.target === evt.currentTarget) {
+  //   closePopup(popup);
+  //   resetPopupForm(popup);
+  // }
+}
+
 
 // Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
 function openImage(evt) {
@@ -166,7 +176,19 @@ addCardBtn.addEventListener('click', () => {
 // обработка события submit формы Профиля
 profileForm.addEventListener('submit', profileFormSubmitHandler);
 
+profileForm.addEventListener('click', (evt) => {
+  evt.stopPropagation();
+})
+
 // обработка события submit формы Карточки
 cardForm.addEventListener('submit', cardFormSubmitHandler);
+
+cardForm.addEventListener('click', (evt) => {
+  evt.stopPropagation();
+})
+
+figure.addEventListener('click', (evt) => {
+  evt.stopPropagation();
+})
 
 addPopupListeners();

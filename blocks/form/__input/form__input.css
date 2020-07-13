@@ -1,6 +1,5 @@
 .form__input {
-  /* margin: 0 0 30px; */
-  margin: 0;
+  margin: 0 0 6px;
   padding: 0;
   width: 100%;
   font-size: 14px;
@@ -9,10 +8,7 @@
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
-/*
-.form__input:nth-of-type(2) {
-  margin-bottom: 48px;
-} */
+
 
 .form__input:invalid {
   border-bottom: 1px solid #FF0000;
@@ -23,11 +19,6 @@
     font-size: 12px;
     line-height: 15px;
     min-height: 24px;
-    /* margin-bottom: 20px; */
   }
-/*
-  .form__input:nth-of-type(2) {
-    margin-bottom: 36px;
-  } */
 }
 
