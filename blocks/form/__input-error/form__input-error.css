@@ -1,8 +1,3 @@
-@import url(./_origin/form__input-error_origin_card-link.css);
-@import url(./_origin/form__input-error_origin_card-name.css);
-@import url(./_origin/form__input-error_origin_profile-description.css);
-@import url(./_origin/form__input-error_origin_profile-name.css);
-
 .form__input-error {
   font-size: 12px;
   line-height: 15px;

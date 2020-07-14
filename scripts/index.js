@@ -19,7 +19,6 @@ const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
 // Элементы попапа картинки
 const figurePopup = document.querySelector('.popup_content_figure');
-const figure = figurePopup.querySelector('.figure');
 const figureCaption = figurePopup.querySelector('.figure__caption');
 const figureImage = figurePopup.querySelector('.figure__image');
 
@@ -45,18 +44,24 @@ function toggleLikeCard(evt) {
   evt.target.classList.toggle('card__like-btn_enabled');
 }
 
-// Открывает указанный попап и навешивает обработчик ESC
-// из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
-function openPopup(popup) {
-  togglePopup(popup);
-  document.addEventListener('keydown', closeOnEsc);
-}
-
 // Сбрасывает поля формы в попапе, если она существует в попапе
 function resetPopupForm(popup) {
   const popupForm = popup.querySelector('.form');
   if (popupForm) {
     popupForm.reset();
+  }
+}
+
+// Обработчик нажатия клавиши ESC
+function closeOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened');
+    // Получилась такая ситуация, что функции использовали друг друга.
+    // Чтобы не обращаться к необъявленной функции, здесь сдублирован код closePopup(popup);
+    // Возможно это решение ошибочно.
+    togglePopup(popup);
+    resetPopupForm(popup);
+    document.removeEventListener('keydown', closeOnEsc);
   }
 }
 
@@ -67,18 +72,17 @@ function closePopup(popup) {
   document.removeEventListener('keydown', closeOnEsc);
 }
 
-// Обработчик нажатия клавиши ESC
-function closeOnEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened');
-    closePopup(popup);
-  }
-}
-
 // Обработчик клика по оверлею
 function closeOnOverlayClick(evt) {
   const popup = evt.currentTarget;
   closePopup(popup);
+}
+
+// Открывает указанный попап и навешивает обработчик ESC
+// из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
+function openPopup(popup) {
+  togglePopup(popup);
+  document.addEventListener('keydown', closeOnEsc);
 }
 
 // Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
@@ -100,9 +104,10 @@ function addCardListeners(card) {
 // Функция создает карточку по шаблону, заполняет значениями, навешивает обработчики на кнопки и возвращает эту карточку.
 function generateCard(cardData) {
   const newCard = cardTemplate.content.cloneNode(true);
+  const newCardImage = newCard.querySelector('.card__image');
   newCard.querySelector('.card__title').textContent = cardData.name;
-  newCard.querySelector('.card__image').src = cardData.link;
-  newCard.querySelector('.card__image').alt = 'фото ' + cardData.name ;
+  newCardImage.src = cardData.link;
+  newCardImage.alt = `фото ${cardData.name}`;
   addCardListeners(newCard);
   return newCard;
 }
@@ -134,7 +139,7 @@ function getCardDataFromInput() {
   return {
     name: cardNameInput.value,
     link: cardLinkInput.value,
-  }
+  };
 }
 
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
@@ -148,20 +153,20 @@ function cardFormSubmitHandler(evt) {
 function addPopupListeners() {
   const popupList = Array.from(document.querySelectorAll('.popup'));
   popupList.forEach((popupElement) => {
-    popupElement.addEventListener('click', closeOnOverlayClick)
+    popupElement.addEventListener('click', closeOnOverlayClick);
     popupElement.querySelector('.close-btn').addEventListener('click', () => {
       closePopup(popupElement);
-    })
+    });
     popupElement.querySelector('.popup__container').addEventListener('click', (evt) => {
       evt.stopPropagation();
-    })
-  })
+    });
+  });
 }
 
 // заполняем секцию карточками
 initialCards.forEach((cardData) => {
   addCard(cardsContainer, cardData);
-})
+});
 
 // обработка нажатия кнопки редактирования профиля
 profileEditBtn.addEventListener('click', editProfile);

@@ -17,7 +17,7 @@ const mesto = {
       openBtnSelector: '.add-btn',
     }
   ]
-}
+};
 
 function showError(inputElement, errorMessage, page) {
   const formElement = inputElement.closest(page.formSelector);
@@ -52,7 +52,7 @@ function hasInvalidInput(formElement, page) {
   const inputList = returnInputList(formElement, page);
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
-  })
+  });
 }
 
 // Добавляют/удаляют атрибут 'disabled' с элемента, если еще не добавлен/удален и добавляют/удаляют соответствующий класс
@@ -87,8 +87,8 @@ function addFormListeners(formElement, page) {
     inputElement.addEventListener('input', () => {
       checkInputValidity(inputElement, page);
       setButtonState(formElement, submitBtnElement, page);
-    })
-  })
+    });
+  });
 }
 
 // Проверяет валидность формы: проверяет все поля, включает сообщения об ошибках, меняет состояние кнопки submit
@@ -96,7 +96,7 @@ function checkFormValidity(formElement, page) {
   const submitBtnElement = formElement.querySelector(page.submitButtonSelector);
   returnInputList(formElement, page).forEach((inputElement) => {
     checkInputValidity(inputElement, page);
-  })
+  });
   setButtonState(formElement, submitBtnElement, page);
 }
 
@@ -111,8 +111,8 @@ function enableValidation(page) {
     // он проверяет валидность формы до начала работы с ней (события input)
     openBtn.addEventListener('click', () => {
       checkFormValidity(form, page);
-    })
-  })
+    });
+  });
 
 }
 
