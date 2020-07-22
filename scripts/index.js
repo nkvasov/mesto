@@ -1,3 +1,9 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+import {initialCards} from './initial-cards.js';
+import {mestoFormsSet} from './mestoFormsSet.js';
+import {openPopup, closePopup, closeOnOverlayClick} from './popupHandlers.js';
+
 // Элементы секции Профиль на странице
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
@@ -17,106 +23,8 @@ const cardPopup = cardForm.closest('.popup');
 const cardNameInput = cardForm.querySelector('[name="card-name"]');
 const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
-// Элементы попапа картинки
-const figurePopup = document.querySelector('.popup_content_figure');
-const figureCaption = figurePopup.querySelector('.figure__caption');
-const figureImage = figurePopup.querySelector('.figure__image');
-
 // Секция карточек на странице
 const cardsContainer = document.querySelector('.cards__container');
-
-// Шаблон карточки
-const cardTemplate = document.querySelector('.card-template');
-
-
-// Функция меняет видимость заданного попапа.
-function togglePopup(popup) {
-  popup.classList.toggle('popup_opened');
-}
-
-// Функция удаления карточки
-function deleteCard(evt) {
-  evt.target.closest('.card').remove();
-}
-
-// Функция переключения иконки Like
-function toggleLikeCard(evt) {
-  evt.target.classList.toggle('card__like-btn_enabled');
-}
-
-// Сбрасывает поля формы в попапе, если она существует в попапе
-function resetPopupForm(popup) {
-  const popupForm = popup.querySelector('.form');
-  if (popupForm) {
-    popupForm.reset();
-  }
-}
-
-// Обработчик нажатия клавиши ESC
-function closeOnEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened');
-    // Получилась такая ситуация, что функции использовали друг друга.
-    // Чтобы не обращаться к необъявленной функции, здесь сдублирован код closePopup(popup);
-    // Возможно это решение ошибочно.
-    togglePopup(popup);
-    resetPopupForm(popup);
-    document.removeEventListener('keydown', closeOnEsc);
-  }
-}
-
-// Закрывает указанный попап, удаляет обработчик ESC
-function closePopup(popup) {
-  togglePopup(popup);
-  resetPopupForm(popup);
-  document.removeEventListener('keydown', closeOnEsc);
-}
-
-// Обработчик клика по оверлею
-function closeOnOverlayClick(evt) {
-  const popup = evt.currentTarget;
-  closePopup(popup);
-}
-
-// Открывает указанный попап и навешивает обработчик ESC
-// из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
-function openPopup(popup) {
-  togglePopup(popup);
-  document.addEventListener('keydown', closeOnEsc);
-}
-
-// Функция открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
-function openImage(evt) {
-  const currentCard = evt.target.closest('.card');
-  figureImage.src = evt.target.src;
-  figureImage.alt = evt.target.alt;
-  figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
-  openPopup(figurePopup);
-}
-
-// Функция навешивает обработчики событий на карточку
-function addCardListeners(card) {
-  card.querySelector('.card__trash-btn').addEventListener('click', deleteCard);
-  card.querySelector('.card__like-btn').addEventListener('click', toggleLikeCard);
-  card.querySelector('.card__image').addEventListener('click', openImage);
-}
-
-// Функция создает карточку по шаблону, заполняет значениями, навешивает обработчики на кнопки и возвращает эту карточку.
-function generateCard(cardData) {
-  const newCard = cardTemplate.content.cloneNode(true);
-  const newCardImage = newCard.querySelector('.card__image');
-  newCard.querySelector('.card__title').textContent = cardData.name;
-  newCardImage.src = cardData.link;
-  newCardImage.alt = `фото ${cardData.name}`;
-  addCardListeners(newCard);
-  return newCard;
-}
-
-// Функция добавляет на страницу карточку с указанными данными в указанный контейнер.
-function addCard(container, cardData) {
-  const newCard = generateCard(cardData);
-  container.prepend(newCard);
-}
 
 // Функция открывает попап редактирования профиля, предварительно заполняет поля значениями со страницы
 function editProfile() {
@@ -124,7 +32,6 @@ function editProfile() {
   profileJobInput.value = profileJob.textContent;
   openPopup(profilePopup);
 }
-
 
 // Функция размещает введенные данные Профиля на страницу и закрывает форму.
 function profileFormSubmitHandler(evt) {
@@ -142,15 +49,23 @@ function getCardDataFromInput() {
   };
 }
 
+// Создает новую карточку и добавляет в указанное место
+function addCard(container, cardData) {
+  const card = new Card(cardData, '.card-template');
+  const cardElement = card.generateCard();
+  container.prepend(cardElement);
+}
+
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
 function cardFormSubmitHandler(evt) {
   evt.preventDefault();
-  addCard(cardsContainer, getCardDataFromInput());
+  const cardData = getCardDataFromInput();
+  addCard(cardsContainer, cardData);
   closePopup(cardPopup);
 }
 
 // Добавляет попапам функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
-function addPopupListeners() {
+function setPopupListeners() {
   const popupList = Array.from(document.querySelectorAll('.popup'));
   popupList.forEach((popupElement) => {
     popupElement.addEventListener('click', closeOnOverlayClick);
@@ -182,4 +97,15 @@ profileForm.addEventListener('submit', profileFormSubmitHandler);
 // обработка события submit формы Карточки
 cardForm.addEventListener('submit', cardFormSubmitHandler);
 
-addPopupListeners();
+setPopupListeners();
+
+function enableValidation() {
+  const forms = Array.from(document.querySelectorAll('.form'));
+  forms.forEach((form) => {
+    const formValidator = new FormValidator(mestoFormsSet, form);
+    formValidator.enableValidation();
+  });
+}
+
+enableValidation();
+
