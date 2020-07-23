@@ -99,13 +99,13 @@ cardForm.addEventListener('submit', cardFormSubmitHandler);
 
 setPopupListeners();
 
-function enableValidation() {
+function enableValidation(formSettings) {
   const forms = Array.from(document.querySelectorAll('.form'));
   forms.forEach((form) => {
-    const formValidator = new FormValidator(mestoFormsSet, form);
+    const formValidator = new FormValidator(formSettings, form);
     formValidator.enableValidation();
   });
 }
 
-enableValidation();
+enableValidation(mestoFormsSet);
 

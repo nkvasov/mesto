@@ -6,16 +6,18 @@ export default class FormValidator {
     this._activeInputErrorClass = formSettings.activeInputErrorClass;
     this._inputErrorSelectorComponent = formSettings.inputErrorSelectorComponent;
     this._formElement = formElement;
+    // Ищем в переданном массиве селектор кнопки, открывающей форму (по имени формы)
     const openBtnSelector = formSettings.openBtnSelectors.find((item) => item.formName === formElement.name).openBtnSelector;
     this._formOpenBtn = document.querySelector(openBtnSelector);
   }
 
   _getErrorElement(inputElement) {
+    // Селектор ошибки складывается из неизменной строки и id поля ввода
     const errorSelector = `${this._inputErrorSelectorComponent}${inputElement.id}`;
     return this._formElement.querySelector(errorSelector);
   }
 
-  // Методы показывают и скрывают сообщение об ошибке. Ошибка с полем ввода связаны через id поля и class элемента ошибки (так было сделано по замечанию ревьюера)
+  // Методы показывают и скрывают сообщение об ошибке. Ошибка с полем ввода связаны через id поля и class элемента ошибки (так было сделано по замечанию ревьюера взамени использования родственных связей)
   _showError(inputElement, errorMessage) {
     const errorElement = this._getErrorElement(inputElement);
     errorElement.textContent = errorMessage;
@@ -53,7 +55,7 @@ export default class FormValidator {
     });
   }
 
-  // Добавляют/удаляют атрибут 'disabled' с элемента, если еще не добавлен/удален и добавляют/удаляют соответствующий класс
+  // Добавляют/удаляют атрибут 'disabled' с элемента, если еще не добавлен/удален и добавляют/удаляют соответствующий класс, отвечающий за видимость
   _disableElement(element) {
     element.classList.add(this._inactiveBtnClass);
     if (!element.hasAttribute('disabled')) {
@@ -68,7 +70,7 @@ export default class FormValidator {
     }
   }
 
-  // Деактивирует или активирует кнопку в зависимости от наличия/отсутствия невалидного поля ввода в форме
+  // Деактивирует или активирует кнопку submit в зависимости от наличия/отсутствия невалидного поля ввода в форме
   _setButtonState(buttonElement) {
     if (this._hasInvalidInput()) {
       this._disableElement(buttonElement);
@@ -78,6 +80,7 @@ export default class FormValidator {
   }
 
   // Проверяет валидность формы: проверяет все поля, включает сообщения об ошибках, меняет состояние кнопки submit
+  // (для проверки формы до начала работы с ней)
   _checkFormValidity() {
     this._inputList.forEach((inputElement) => {
       this._checkInputValidity(inputElement);
