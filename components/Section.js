@@ -1,8 +1,3 @@
-import { initialCards } from '../utils/initial-cards.js';
-import {
-  cardsContainerSelector
-} from '../utils/constants.js';
-
 export default class Section {
   constructor({items, renderer}, containerSelector) {
     this._initialArray = items;
@@ -10,12 +5,15 @@ export default class Section {
     this._container = document.querySelector(containerSelector);
   }
 
+  // Метод обрабатывает переданные в конструктор данные с помощью переданной функции и размещает их на страницу
   renderItems() {
     this._initialArray.forEach((item) => {
-      this._renderer(item);
+      const itemElement = this._renderer(item);
+      this.addItem(itemElement);
     });
   }
 
+// Метод добавляет указанный элемент на страницу (в контейнер экземпляра класса)
   addItem(element) {
     this._container.prepend(element);
   }
@@ -25,16 +23,16 @@ export default class Section {
 
 
 // Создает новую карточку и добавляет в указанное место
-function addCard(container, cardData) {
-  const card = new Card(cardData, '.card-template');
-  const cardElement = card.generateCard();
-  container.prepend(cardElement);
-}
+// function addCard(container, cardData) {
+//   const card = new Card(cardData, '.card-template');
+//   const cardElement = card.generateCard();
+//   container.prepend(cardElement);
+// }
 
 // Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
-function cardFormSubmitHandler(evt) {
-  evt.preventDefault();
-  const cardData = getCardDataFromInput();
-  addCard(cardsContainer, cardData);
-  closePopup(cardPopup);
-}
+// function cardFormSubmitHandler(evt) {
+//   evt.preventDefault();
+//   const cardData = getCardDataFromInput();
+//   addCard(cardsContainer, cardData);
+//   closePopup(cardPopup);
+// }

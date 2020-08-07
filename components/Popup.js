@@ -3,60 +3,40 @@ export default class Popup {
     this._element = document.querySelector(popupSelector);
   }
 
-  // _handleEscClose(evt) {
-  //   if (evt.key === 'Escape') {
-  //     const popup = document.querySelector('.popup_opened');
-  //     popup.classList.remove('popup_opened');
-  //   }
-  // }
-
-
+  // Обработчик Esc
   _handleEscClose = (evt) => {
     if (evt.key === 'Escape') {
       this.close();
     }
   }
 
-  _toggle() {
-    this._element.classList.toggle('popup_opened');
-  }
-
+  // Открывает попап и навешивает обработчик ESC
   open() {
-    this._toggle();
+    this._element.classList.add('popup_opened');
     document.addEventListener('keydown', this._handleEscClose);
   }
 
+  // Закрывает  попап, удаляет обработчик ESC
   close() {
-    this._toggle();
+    this._element.classList.remove('popup_opened');
     document.removeEventListener('keydown', this._handleEscClose);
   }
 
+  // Добавляет попапу функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
   setEventListeners() {
     this._element.querySelector('.close-btn').addEventListener('click', () => {
+      this.close();
+    });
+    this._element.querySelector('.popup__container').addEventListener('click', (evt) => {
+      evt.stopPropagation();
+    });
+    this._element.addEventListener('click', () => {
       this.close();
     });
   }
 }
 
 
-// Добавляет попапам функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
-function setPopupListeners() {
-  const popupList = Array.from(document.querySelectorAll('.popup'));
-  popupList.forEach((popupElement) => {
-    popupElement.addEventListener('click', closeOnOverlayClick);
-    popupElement.querySelector('.close-btn').addEventListener('click', () => {
-      closePopup(popupElement);
-    });
-    popupElement.querySelector('.popup__container').addEventListener('click', (evt) => {
-      evt.stopPropagation();
-    });
-  });
-}
-
-// Функция меняет видимость заданного попапа.
-const togglePopup = function(popup) {
-  popup.classList.toggle('popup_opened');
-}
 
 // Сбрасывает поля формы в попапе, если она существует в попапе
 const resetPopupForm = function(popup) {
@@ -73,27 +53,6 @@ const closePopup = function(popup) {
   document.removeEventListener('keydown', closeOnEsc);
 }
 
-// Обработчик нажатия клавиши ESC
-function closeOnEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened');
-    closePopup(popup);
-  }
-}
-
-// Обработчик клика по оверлею
-function closeOnOverlayClick(evt) {
-  const popup = evt.currentTarget;
-  closePopup(popup);
-}
-
-// Открывает указанный попап и навешивает обработчик ESC
-// из задания: Слушатель событий, закрывающий модальное окно по нажатию на Esc, добавляется при открытии модального окна и удаляется при его закрытии.
-function openPopup(popup) {
-  togglePopup(popup);
-  document.addEventListener('keydown', closeOnEsc);
-}
-
 // Открывает попап с картинкой, предварительно поставив туда данные из кликнутой карточки.
 function openImage(evt) {
   const currentCard = evt.target.closest('.card');
@@ -103,4 +62,3 @@ function openImage(evt) {
   openPopup(figurePopup);
 }
 
-export {openPopup, closePopup, closeOnOverlayClick, openImage};

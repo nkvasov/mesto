@@ -1,9 +1,10 @@
-import {openImage} from './popupHandlers.js'
+// import {openImage} from '../scripts/popupHandlers.js'
 export default class Card {
-  constructor(cardData, cardTemplateSelector) {
-    this._name = cardData.name;
-    this._link = cardData.link;
+  constructor({name, link}, cardTemplateSelector, handleCardClick) {
+    this._name = name;
+    this._link = link;
     this._cardTemplateSelector = cardTemplateSelector;
+    this._openImage = handleCardClick;
   }
 
   _getTemplate() {
@@ -21,8 +22,6 @@ export default class Card {
   _toggleLikeCard(evt) {
     evt.target.classList.toggle('card__like-btn_enabled');
   }
-
-  _openImage = openImage;
 
   _setCardListeners() {
     this._element.querySelector('.card__trash-btn').addEventListener('click', this._deleteCard);

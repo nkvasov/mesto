@@ -1,28 +1,31 @@
 import Popup from './Popup.js';
-export default class PopupWithImage extends Popup {
-  constructor(popupSelector) {
-    super(popupSelector);
-  }
+import {
+  figureImage,
+  figureCaption
+} from '../utils/constants.js';
 
-  open() {
-    this._element.querySelector('.figure__image')
+export default class PopupWithImage extends Popup {
+  // constructor(popupSelector) {
+  //   super(popupSelector);
+  // }
+
+  open(evt) {
+    const originCard = evt.target.closest('.card');
     figureImage.src = evt.target.src;
     figureImage.alt = evt.target.alt;
-    figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
-    this._toggle();
+    figureCaption.textContent = originCard.querySelector('.card__title').textContent;
+    this._element.classList.add('popup_opened');
     document.addEventListener('keydown', this._handleEscClose);
   }
 }
 
-// Элементы попапа картинки
-const figurePopup = document.querySelector('.popup_content_figure');
-const figureCaption = figurePopup.querySelector('.figure__caption');
-const figureImage = figurePopup.querySelector('.figure__image');
 
-function openImage(evt) {
-  const currentCard = evt.target.closest('.card');
-  figureImage.src = evt.target.src;
-  figureImage.alt = evt.target.alt;
-  figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
-  openPopup(figurePopup);
-}
+
+
+// function openImage(evt) {
+//   const currentCard = evt.target.closest('.card');
+//   figureImage.src = evt.target.src;
+//   figureImage.alt = evt.target.alt;
+//   figureCaption.textContent = currentCard.querySelector('.card__title').textContent;
+//   openPopup(figurePopup);
+// }
