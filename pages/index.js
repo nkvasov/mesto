@@ -1,8 +1,32 @@
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
-import {initialCards} from './initial-cards.js';
-import {mestoFormsSet} from './mestoFormsSet.js';
-import {openPopup, closePopup, closeOnOverlayClick} from './popupHandlers.js';
+import Card from '../scripts/Card.js';
+import FormValidator from '../scripts/FormValidator.js';
+import Popup from '../components/Popup.js';
+import Section from '../components/Section.js';
+import {initialCards} from '../utils/initial-cards.js';
+import {mestoFormsSet} from '../scripts/mestoFormsSet.js';
+import {openPopup, closePopup, closeOnOverlayClick} from '../scripts/popupHandlers.js';
+
+const xxx = new Popup('.edit-profile-popup');
+xxx.setEventListeners();
+xxx.open();
+
+// xxx.close();
+
+
+
+// const cardsSection = new Section({
+//   items: initialCards,
+//   renderer: (cardData) => {
+//     const card = new Card(cardData, '.card-template');
+//     const cardElement = card.generateCard();
+//     cardsSection.addItem(cardElement);
+//   }
+// },
+// cardsContainerSelector
+// );
+
+
+// cardsSection.renderItems();
 
 // Элементы секции Профиль на странице
 const profile = document.querySelector('.profile');
@@ -97,7 +121,7 @@ profileForm.addEventListener('submit', profileFormSubmitHandler);
 // обработка события submit формы Карточки
 cardForm.addEventListener('submit', cardFormSubmitHandler);
 
-setPopupListeners();
+// setPopupListeners();
 
 function enableValidation(formSettings) {
   const forms = Array.from(document.querySelectorAll('.form'));
