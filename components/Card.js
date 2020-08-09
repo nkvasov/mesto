@@ -1,4 +1,3 @@
-// import {openImage} from '../scripts/popupHandlers.js'
 export default class Card {
   constructor({name, link}, cardTemplateSelector, handleCardClick) {
     this._name = name;

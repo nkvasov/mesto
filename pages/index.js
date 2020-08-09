@@ -1,27 +1,30 @@
 import Card from '../components/Card.js';
-// import FormValidator from '../scripts/FormValidator.js';
-// import Popup from '../components/Popup.js';
 import PopupWithImage from '../components/PopupWithImage.js';
-// import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithForm from '../components/PopupWithForm.js';
 import Section from '../components/Section.js';
-// import {mestoFormsSet} from '../scripts/mestoFormsSet.js';
-// import {openPopup, closePopup, closeOnOverlayClick} from '../scripts/popupHandlers.js';
-import { initialCards } from '../utils/initial-cards.js';
+import UserInfo from '../components/UserInfo.js';
+import {mestoFormsSet} from '../utils/mestoFormsSet.js';
+import {initialCards} from '../utils/initial-cards.js';
 import {
   cardsContainerSelector,
-  cardTemplateSelector
+  cardTemplateSelector,
+  profileEditBtn,
+  profilePopupSelector,
+  profileNameSelector,
+  profileJobSelector,
+  profileNameInput,
+  profileJobInput,
+  cardPopupSelector,
+  addCardBtn,
+  cardNameInput,
+  cardLinkInput
 } from '../utils/constants.js';
 
+import {enableValidation} from '../utils/utils.js';
 
-// const xxx = new Popup('.edit-profile-popup');
-// xxx.setEventListeners();
-// xxx.open();
-
-// xxx.close();
 
 const figurePopup = new PopupWithImage('.image-popup');
 figurePopup.setEventListeners();
-// figurePopup.open();
 
 
 const cardRenderer = (cardData) => {
@@ -36,51 +39,59 @@ const cardsSection = new Section({items: initialCards, renderer: cardRenderer}, 
 
 cardsSection.renderItems();
 
+// Создаем экземпляр класса UserInfo
+new UserInfo( {
+  nameSelector: profileNameSelector,
+  jobSelector: profileJobSelector
+} );
 
-// Элементы секции Профиль на странице
-const profile = document.querySelector('.profile');
-const profileName = profile.querySelector('.profile__name');
-const profileJob = profile.querySelector('.profile__description');
-const profileEditBtn = profile.querySelector('.profile__edit-btn');
-const addCardBtn = profile.querySelector('.add-btn');
+// Создаем попап редактирования профиля
+const profilePopup = new PopupWithForm( {
+  popupSelector: profilePopupSelector,
+  handleFormSubmit: (inputData) => {
+    profileInfo.setUserInfo(inputData);
+  }
+} );
 
-// Элементы попапа "Редактирование профиля"
-const profileForm = document.querySelector('[name="edit-profile"]');
-const profilePopup = profileForm.closest('.popup');
-const profileNameInput = profileForm.querySelector('[name="profile-name"]');
-const profileJobInput = profileForm.querySelector('[name="profile-description"]');
+profilePopup.setEventListeners();
 
-// Элементы попапа "Добавление карточки"
-const cardForm = document.querySelector('[name="add-card"]');
-const cardPopup = cardForm.closest('.popup');
-const cardNameInput = cardForm.querySelector('[name="card-name"]');
-const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
-// Секция карточек на странице
-const cardsContainer = document.querySelector('.cards__container');
+
 
 // Функция открывает попап редактирования профиля, предварительно заполняет поля значениями со страницы
-// function editProfile() {
-//   profileNameInput.value = profileName.textContent;
-//   profileJobInput.value = profileJob.textContent;
-//   openPopup(profilePopup);
-// }
+function editProfile() {
+  const profileElementData = profileInfo.getUserInfo();
+  profileNameInput.value = profileElementData.name;
+  profileJobInput.value = profileElementData.job;
+  profilePopup.open();
+}
 
-// Функция размещает введенные данные Профиля на страницу и закрывает форму.
-// function profileFormSubmitHandler(evt) {
-//   evt.preventDefault();
-//   profileName.textContent = profileNameInput.value;
-//   profileJob.textContent = profileJobInput.value;
-//   closePopup(profilePopup);
-// }
+// обработка нажатия кнопки редактирования профиля
+profileEditBtn.addEventListener('click', editProfile);
 
-// Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
-// function getCardDataFromInput() {
-//   return {
-//     name: cardNameInput.value,
-//     link: cardLinkInput.value,
-//   };
-// }
+const cardPopup = new PopupWithForm( {
+  popupSelector: cardPopupSelector,
+  handleFormSubmit: () => {
+    const cardData = {
+      name: cardNameInput.value,
+      link: cardLinkInput.value,
+    };
+    const newCard = cardRenderer(cardData);
+    document.querySelector('.cards__container').prepend(newCard);
+  }
+} );
+
+cardPopup.setEventListeners();
+
+// обработка нажатия кнопки Добавления карточки
+addCardBtn.addEventListener('click', () => {
+  cardPopup.open();
+});
+
+
+
+enableValidation(mestoFormsSet);
+
 
 // Создает новую карточку и добавляет в указанное место
 // function addCard(container, cardData) {
@@ -97,48 +108,12 @@ const cardsContainer = document.querySelector('.cards__container');
 //   closePopup(cardPopup);
 // }
 
-// Добавляет попапам функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
-// function setPopupListeners() {
-//   const popupList = Array.from(document.querySelectorAll('.popup'));
-//   popupList.forEach((popupElement) => {
-//     popupElement.addEventListener('click', closeOnOverlayClick);
-//     popupElement.querySelector('.close-btn').addEventListener('click', () => {
-//       closePopup(popupElement);
-//     });
-//     popupElement.querySelector('.popup__container').addEventListener('click', (evt) => {
-//       evt.stopPropagation();
-//     });
-//   });
-// }
 
-// заполняем секцию карточками
-// initialCards.forEach((cardData) => {
-//   addCard(cardsContainer, cardData);
-// });
-
-// обработка нажатия кнопки редактирования профиля
-// profileEditBtn.addEventListener('click', editProfile);
-
-// обработка нажатие кнопки Добавления карточки
-// addCardBtn.addEventListener('click', () => {
-//   openPopup(cardPopup);
-// });
-
-// обработка события submit формы Профиля
-// profileForm.addEventListener('submit', profileFormSubmitHandler);
-
-// обработка события submit формы Карточки
-// cardForm.addEventListener('submit', cardFormSubmitHandler);
-
-// setPopupListeners();
-
-// function enableValidation(formSettings) {
-//   const forms = Array.from(document.querySelectorAll('.form'));
-//   forms.forEach((form) => {
-//     const formValidator = new FormValidator(formSettings, form);
-//     formValidator.enableValidation();
-//   });
-// }
-
-// enableValidation(mestoFormsSet);
+// Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
+function getCardDataFromInput() {
+  return {
+    name: cardNameInput.value,
+    link: cardLinkInput.value,
+  };
+}
 
