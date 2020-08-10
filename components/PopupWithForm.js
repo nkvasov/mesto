@@ -7,6 +7,7 @@ export default class PopupWithForm extends Popup {
     this._form = this._element.querySelector('.form');
   }
 
+  // Возвращает объект с данными полей ввода формы
   _getInputValues() {
     this._inputList = this._element.querySelectorAll('.form__input');
     this._formValues = {};
@@ -17,12 +18,11 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._element.classList.remove('popup_opened');
-    document.removeEventListener('keydown', this._handleEscClose);
+    super.close();
     this._form.reset();
   }
 
-  // Добавляет попапу функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
+  // Расширяет родительскую функцию добавлением обработки submit
   setEventListeners() {
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault();
@@ -30,25 +30,6 @@ export default class PopupWithForm extends Popup {
       this.close();
     });
 
-    this._element.querySelector('.close-btn').addEventListener('click', () => {
-      this.close();
-    });
-
-    this._element.querySelector('.popup__container').addEventListener('click', (evt) => {
-      evt.stopPropagation();
-    });
-
-    this._element.addEventListener('click', () => {
-      this.close();
-    });
+    super.setEventListeners();
   }
-}
-
-
-// Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
-function getCardDataFromInput() {
-  return {
-    name: cardNameInput.value,
-    link: cardLinkInput.value,
-  };
 }

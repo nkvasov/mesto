@@ -1,13 +1,12 @@
-import Card from '../components/Card.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
+import Card from '../components/Card.js';
 import {mestoFormsSet} from '../utils/mestoFormsSet.js';
 import {initialCards} from '../utils/initial-cards.js';
 import {
   cardsContainerSelector,
-  cardTemplateSelector,
   profileEditBtn,
   profilePopupSelector,
   profileNameSelector,
@@ -16,104 +15,77 @@ import {
   profileJobInput,
   cardPopupSelector,
   addCardBtn,
-  cardNameInput,
-  cardLinkInput
+  cardTemplateSelector
 } from '../utils/constants.js';
 
-import {enableValidation} from '../utils/utils.js';
+import {
+  enableValidation,
+  getCardDataFromInput
+} from '../utils/utils.js';
 
 
+// Создаем экземпляр класса PopupWithImage, и навешиваем слушателей
 const figurePopup = new PopupWithImage('.image-popup');
 figurePopup.setEventListeners();
 
-
-const cardRenderer = (cardData) => {
+// Функция создает экземпляр класса Card на основе входящих данных и размещает на страницу.
+// Использует иннициализованные в index.js переменные, поэтому размещена здесь.
+const renderCard = function(cardData) {
   const card = new Card(cardData, cardTemplateSelector,  (evt) => {
     figurePopup.open(evt);
   });
-  return card.generateCard();
+  const cardElement = card.generateCard();
+  cardsSection._container.prepend(cardElement);
 }
 
-// Создаем экземпляр класса Section, и заполняем страницу карточками
-const cardsSection = new Section({items: initialCards, renderer: cardRenderer}, cardsContainerSelector);
-
-cardsSection.renderItems();
-
 // Создаем экземпляр класса UserInfo
-new UserInfo( {
+const profileInfo = new UserInfo( {
   nameSelector: profileNameSelector,
   jobSelector: profileJobSelector
 } );
 
-// Создаем попап редактирования профиля
+// Создаем экземпляр класса PopupWithForm для попапа редактирования профиля и навешиваем слушателей
 const profilePopup = new PopupWithForm( {
   popupSelector: profilePopupSelector,
   handleFormSubmit: (inputData) => {
     profileInfo.setUserInfo(inputData);
   }
 } );
-
 profilePopup.setEventListeners();
 
-
-
-
-// Функция открывает попап редактирования профиля, предварительно заполняет поля значениями со страницы
-function editProfile() {
-  const profileElementData = profileInfo.getUserInfo();
-  profileNameInput.value = profileElementData.name;
-  profileJobInput.value = profileElementData.job;
-  profilePopup.open();
-}
-
-// обработка нажатия кнопки редактирования профиля
-profileEditBtn.addEventListener('click', editProfile);
-
+// Создаем экземпляр класса PopupWithForm для попапа добавления карточки и навешиваем слушателей
 const cardPopup = new PopupWithForm( {
   popupSelector: cardPopupSelector,
   handleFormSubmit: () => {
-    const cardData = {
-      name: cardNameInput.value,
-      link: cardLinkInput.value,
-    };
-    const newCard = cardRenderer(cardData);
-    document.querySelector('.cards__container').prepend(newCard);
+    const cardData = getCardDataFromInput();
+    renderCard(cardData);
   }
 } );
-
 cardPopup.setEventListeners();
 
-// обработка нажатия кнопки Добавления карточки
+// обработка нажатия кнопки Открытия попапа карточки
 addCardBtn.addEventListener('click', () => {
   cardPopup.open();
 });
 
+// обработка нажатия кнопки редактирования профиля
+profileEditBtn.addEventListener('click', () => {
+  const profileElementData = profileInfo.getUserInfo();
+  profileNameInput.value = profileElementData.name;
+  profileJobInput.value = profileElementData.job;
+  profilePopup.open();
+});
 
+// Создаем экземпляр класса Section, и заполняем страницу карточками
+const cardsSection = new Section({
+  items: initialCards,
+  renderer: renderCard
+}, cardsContainerSelector);
 
+cardsSection.renderItems();
+
+// Включаем валидацию
 enableValidation(mestoFormsSet);
 
 
-// Создает новую карточку и добавляет в указанное место
-// function addCard(container, cardData) {
-//   const card = new Card(cardData, '.card-template');
-//   const cardElement = card.generateCard();
-//   container.prepend(cardElement);
-// }
-
-// Функция запускает создание новой карточки на основе введенных данных, размещает карточку на странице и закрывает форму.
-// function cardFormSubmitHandler(evt) {
-//   evt.preventDefault();
-//   const cardData = getCardDataFromInput();
-//   addCard(cardsContainer, cardData);
-//   closePopup(cardPopup);
-// }
-
-
-// Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
-function getCardDataFromInput() {
-  return {
-    name: cardNameInput.value,
-    link: cardLinkInput.value,
-  };
-}
 
