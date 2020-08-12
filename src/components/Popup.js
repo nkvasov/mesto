@@ -4,11 +4,17 @@ export default class Popup {
   }
 
   // Обработчик Esc
-  _handleEscClose = (evt) => {
-    if (evt.key === 'Escape') {
+  _handleEscClose = (event) => {
+    if (event.key === 'Escape') {
       this.close();
     }
   }
+
+  // _handleEscClose(evt) {
+  //   if (evt.key === 'Escape') {
+  //     this.close();
+  //   }
+  // }
 
   // Открывает попап и навешивает обработчик ESC
   open() {

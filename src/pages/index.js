@@ -23,6 +23,8 @@ import {
   getCardDataFromInput
 } from '../utils/utils.js';
 
+import './index.css';
+
 
 // Создаем экземпляр класса PopupWithImage, и навешиваем слушателей
 const figurePopup = new PopupWithImage('.image-popup');
