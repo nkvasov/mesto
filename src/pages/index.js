@@ -37,7 +37,7 @@ const renderCard = function(cardData) {
     figurePopup.open(evt);
   });
   const cardElement = card.generateCard();
-  cardsSection._container.prepend(cardElement);
+  cardsSection.addItem(cardElement);
 }
 
 // Создаем экземпляр класса UserInfo
