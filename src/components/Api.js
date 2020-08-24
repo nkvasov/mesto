@@ -35,9 +35,28 @@ export default class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify(inputValues)
+    });
+  }
+
+  postCard(inputValues) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify(inputValues)
     })
-    .then((res) => {
-      console.log(res);
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Ошибка: ${res.status}`);
+      }
+    });
+  }
+
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers
     });
   }
 }

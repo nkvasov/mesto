@@ -17,12 +17,13 @@ import {
   profileJobInput,
   cardPopupSelector,
   addCardBtn,
-  cardTemplateSelector
+  cardTemplateSelector,
+  confirmationPopupSelector
 } from '../utils/constants.js';
 
 import {
   enableValidation,
-  getCardDataFromInput
+  // getCardDataFromInput
 } from '../utils/utils.js';
 
 import './index.css';
@@ -34,50 +35,69 @@ figurePopup.setEventListeners();
 
 // Объявляем переменную для экземпляра класса Section
 let cardsSection;
+let profileInfo;
 
 // Функция создает экземпляр класса Card на основе входящих данных и размещает на страницу.
 // Использует иннициализованные в index.js переменные, поэтому размещена здесь.
 const renderCard = function(cardData) {
+  // console.log(cardData);
   const card = new Card(cardData, cardTemplateSelector,  (evt) => {
     figurePopup.open(evt);
-  });
+  }, profileInfo.getUserId());
   const cardElement = card.generateCard();
   cardsSection.addItem(cardElement);
 }
 
 // Создаем экземпляр класса UserInfo
-const profileInfo = new UserInfo( {
-  nameSelector: profileNameSelector,
-  jobSelector: profileJobSelector,
-  avatarSelector: profileAvatarSelector
-} );
+// const profileInfo = new UserInfo( {
+//   nameSelector: profileNameSelector,
+//   jobSelector: profileJobSelector,
+//   avatarSelector: profileAvatarSelector
+// } );
 
 // Создаем экземпляр класса PopupWithForm для попапа редактирования профиля и навешиваем слушателей
 const profilePopup = new PopupWithForm( {
   popupSelector: profilePopupSelector,
   handleFormSubmit: (inputData) => {
-    profileInfo.setInitialUserInfo({
-      name: inputData['profile-name'],
-      job: inputData['profile-description']
-    });
     api.patchUserInfo({
       name: inputData['profile-name'],
       about: inputData['profile-description']
+    })
+    .then(() => {
+      profileInfo.setUserInfo({
+        name: inputData['profile-name'],
+        job: inputData['profile-description']
+      });
     });
   }
-
 } );
 profilePopup.setEventListeners();
 
 // Создаем экземпляр класса PopupWithForm для попапа добавления карточки и навешиваем слушателей
 const cardPopup = new PopupWithForm( {
   popupSelector: cardPopupSelector,
-  handleFormSubmit: () => {
-    const cardData = getCardDataFromInput();
-    renderCard(cardData);
+  handleFormSubmit: (inputData) => {
+    api.postCard({
+      name: inputData['card-name'],
+      link: inputData['card-link']
+    })
+    .then(() => {
+      renderCard({
+        name: inputData['card-name'],
+        link: inputData['card-link']
+      });
+    });
   }
 } );
 cardPopup.setEventListeners();
+
+// Создаем попап подтверждения удаления карточки
+const confirmationPopup = new PopupWithForm( {
+  popupSelector: confirmationPopupSelector,
+  handleFormSubmit: () => {
+    console.log('fire');
+  }
+});
 
 // обработка нажатия кнопки Открытия попапа карточки
 addCardBtn.addEventListener('click', () => {
@@ -106,22 +126,44 @@ const api = new Api({
 api.getUserInfo()
 .then((userData) => {
   console.log(userData);
-  profileInfo.setInitialUserInfo({
+
+  profileInfo = new UserInfo( {
+    nameSelector: profileNameSelector,
+    jobSelector: profileJobSelector,
+    avatarSelector: profileAvatarSelector
+  }, userData);
+
+  profileInfo.setUserInfo({
     name: userData.name,
     job: userData.about,
-    avatar: userData.avatar
+  });
+  profileInfo.setUserAvatar(userData.avatar);
+})
+// Запрашиваем у сервера карточки и размещаем на странице
+.then(() => {
+  api.getInitialCards()
+  .then((initialCards) => {
+    cardsSection = new Section({
+      items: initialCards,
+      renderer: renderCard
+    }, cardsContainerSelector);
+    cardsSection.renderItems();
   });
 })
+.catch((err) => {
+  console.log(err);
+});
+
 
 // Запрашиваем у сервера карточки и размещаем на странице
-api.getInitialCards()
-.then((initialCards) => {
-  cardsSection = new Section({
-    items: initialCards,
-    renderer: renderCard
-  }, cardsContainerSelector);
-  cardsSection.renderItems();
-});
+// api.getInitialCards()
+// .then((initialCards) => {
+//   cardsSection = new Section({
+//     items: initialCards,
+//     renderer: renderCard
+//   }, cardsContainerSelector);
+//   cardsSection.renderItems();
+// });
 
 
 
@@ -142,5 +184,13 @@ enableValidation(mestoFormsSet);
 
 // Токен: 4925288f-4ad5-4bea-a0ab-09ab5e2fc610
 // Идентификатор группы: cohort-14
+
+
+// owner:
+// about: "в тумане"
+// avatar: "https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg"
+// cohort: "cohort-14"
+// name: "Ёжик"
+// _id: "ba37387273f60dba93dd8938"
 
 

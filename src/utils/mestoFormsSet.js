@@ -15,6 +15,10 @@ export const mestoFormsSet = {
     {
       formName: 'add-card',
       openBtnSelector: '.add-btn',
+    },
+    {
+      formName: 'card-delete-confirmation',
+      openBtnSelector: '.card-popup .form__submit-btn'
     }
   ]
 };

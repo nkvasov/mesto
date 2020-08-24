@@ -1,8 +1,9 @@
 export default class UserInfo {
-  constructor( {nameSelector, jobSelector, avatarSelector} ) {
+  constructor( {nameSelector, jobSelector, avatarSelector}, user ) {
     this._nameElement = document.querySelector(nameSelector);
     this._jobElement = document.querySelector(jobSelector);
     this._avatarElement = document.querySelector(avatarSelector);
+    this._user = user;
   }
 
   // Возвращает объект с данными профиля пользователя на странице
@@ -14,21 +15,17 @@ export default class UserInfo {
   }
 
   // Размещает указанные данные на странице
-  // setUserInfo(inputData) {
-  //   this._nameElement.textContent = inputData['profile-name'];
-  //   this._jobElement.textContent = inputData['profile-description'];
-  // }
-
-  //
-  setInitialUserInfo({name, job, avatar}) {
+  setUserInfo({name, job}) {
     this._nameElement.textContent = name;
     this._jobElement.textContent = job;
-    if(avatar) {
-      this._avatarElement.src = avatar;
-      this._avatarElement.alt = `Фото ${name}`;
-    }
+    this._avatarElement.alt = `Аватар пользователя ${name}`;
   }
 
+  setUserAvatar(avatar) {
+    this._avatarElement.src = avatar;
+  }
 
-
+  getUserId() {
+    return this._user._id;
+  }
 }

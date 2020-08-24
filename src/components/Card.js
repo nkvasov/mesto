@@ -1,9 +1,16 @@
 export default class Card {
-  constructor({name, link}, cardTemplateSelector, handleCardClick) {
+  constructor({name, link, likes, owner}, cardTemplateSelector, handleCardClick, creatorId) {
     this._name = name;
     this._link = link;
+    this._likes = likes;
     this._cardTemplateSelector = cardTemplateSelector;
     this._openImage = handleCardClick;
+    if(owner._id === creatorId) {
+      this._owner = true;
+    } else {
+      this._owner = false;
+    }
+
   }
 
   _getTemplate() {
@@ -31,9 +38,13 @@ export default class Card {
   generateCard() {
     this._element = this._getTemplate();
     this._element.querySelector('.card__title').textContent = this._name;
+    this._element.querySelector('.card__like-numbers').textContent = this._likes.length === 0 ? '' : this._likes.length;
     this._image = this._element.querySelector('.card__image');
     this._image.src = this._link;
     this._image.alt = `фото ${this._name}`;
+    if(this._owner) {
+      this._element.querySelector('.card__trash-btn').classList.add('card__trash-btn_enabled');
+    };
     this._setCardListeners();
     return this._element;
   }

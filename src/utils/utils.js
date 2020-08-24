@@ -1,8 +1,8 @@
 import FormValidator from '../components/FormValidator.js';
-import {
-  cardNameInput,
-  cardLinkInput
-} from './constants.js';
+// import {
+//   cardNameInput,
+//   cardLinkInput
+// } from './constants.js';
 
 // Функция включает валидацию для всех форм в документе
 export const enableValidation = function(formSettings) {
@@ -14,11 +14,11 @@ export const enableValidation = function(formSettings) {
 }
 
 // Функция возвращает объект с двумя свойствами для генерации карточки. Значения свойств вводятся пользователем.
-export const getCardDataFromInput = function() {
-  return {
-    name: cardNameInput.value,
-    link: cardLinkInput.value,
-  };
-}
+// export const getCardDataFromInput = function() {
+//   return {
+//     name: cardNameInput.value,
+//     link: cardLinkInput.value,
+//   };
+// }
 
 

@@ -21,5 +21,9 @@ export const profileJobInput = profileForm.querySelector('[name="profile-descrip
 // Элементы попапа "Добавление карточки"
 export const cardPopupSelector = '.card-popup';
 const cardForm = document.querySelector('[name="add-card"]');
-export const cardNameInput = cardForm.querySelector('[name="card-name"]');
-export const cardLinkInput = cardForm.querySelector('[name="card-link"]');
+// export const cardNameInput = cardForm.querySelector('[name="card-name"]');
+// export const cardLinkInput = cardForm.querySelector('[name="card-link"]');
+
+// Элементы попапа "Подтверждение удаления карточки"
+export const confirmationPopupSelector = '.confirmation-popup';
+

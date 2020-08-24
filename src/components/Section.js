@@ -7,7 +7,7 @@ export default class Section {
 
   // Обрабатывает переданные в конструктор данные с помощью переданной функции
   renderItems() {
-    this._initialArray.forEach((item) => {
+    this._initialArray.reverse().forEach((item) => {
       this._renderer(item);
     });
   }
