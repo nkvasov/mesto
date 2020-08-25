@@ -11,6 +11,12 @@ const profile = document.querySelector('.profile');
 export const profileEditBtn = profile.querySelector('.profile__edit-btn');
 export const addCardBtn = profile.querySelector('.add-btn');
 
+export const profileSelectors = {
+  nameSelector: '.profile__name',
+  jobSelector: '.profile__description',
+  avatarSelector: '.profile__avatar'
+};
+
 // Элементы попапа "Редактирование профиля"
 export const profilePopupSelector = '.edit-profile-popup';
 const profileForm = document.querySelector('[name="edit-profile"]');

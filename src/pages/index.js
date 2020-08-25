@@ -10,15 +10,13 @@ import {
   cardsContainerSelector,
   profileEditBtn,
   profilePopupSelector,
-  profileNameSelector,
-  profileJobSelector,
-  profileAvatarSelector,
   profileNameInput,
   profileJobInput,
   cardPopupSelector,
   addCardBtn,
   cardTemplateSelector,
-  confirmationPopupSelector
+  confirmationPopupSelector,
+  profileSelectors
 } from '../utils/constants.js';
 
 import {
@@ -33,27 +31,28 @@ import './index.css';
 const figurePopup = new PopupWithImage('.image-popup');
 figurePopup.setEventListeners();
 
-// Объявляем переменную для экземпляра класса Section
+// Объявляем переменные для экземпляров класса Section и UserInfo
 let cardsSection;
 let profileInfo;
 
 // Функция создает экземпляр класса Card на основе входящих данных и размещает на страницу.
 // Использует иннициализованные в index.js переменные, поэтому размещена здесь.
-const renderCard = function(cardData) {
-  // console.log(cardData);
-  const card = new Card(cardData, cardTemplateSelector,  (evt) => {
-    figurePopup.open(evt);
-  }, profileInfo.getUserId());
+const renderCard = function(cardData, userId) {
+  const card = new Card(cardData,
+    cardTemplateSelector,
+    (evt) => {
+      figurePopup.open(evt);
+    },
+    () => {
+      confirmationPopup.open();
+    },
+    // (cardId) => {
+    //  return api.deleteCard(cardId);
+    // },
+    userId);
   const cardElement = card.generateCard();
   cardsSection.addItem(cardElement);
 }
-
-// Создаем экземпляр класса UserInfo
-// const profileInfo = new UserInfo( {
-//   nameSelector: profileNameSelector,
-//   jobSelector: profileJobSelector,
-//   avatarSelector: profileAvatarSelector
-// } );
 
 // Создаем экземпляр класса PopupWithForm для попапа редактирования профиля и навешиваем слушателей
 const profilePopup = new PopupWithForm( {
@@ -81,11 +80,8 @@ const cardPopup = new PopupWithForm( {
       name: inputData['card-name'],
       link: inputData['card-link']
     })
-    .then(() => {
-      renderCard({
-        name: inputData['card-name'],
-        link: inputData['card-link']
-      });
+    .then((cardData) => {
+      renderCard(cardData, profileInfo.getUserId());
     });
   }
 } );
@@ -94,8 +90,11 @@ cardPopup.setEventListeners();
 // Создаем попап подтверждения удаления карточки
 const confirmationPopup = new PopupWithForm( {
   popupSelector: confirmationPopupSelector,
-  handleFormSubmit: () => {
-    console.log('fire');
+  handleFormSubmit: (card) => {
+    card._delete();
+    // (cardId) => {
+    //  return api.deleteCard(cardId);
+    // },
   }
 });
 
@@ -122,59 +121,26 @@ const api = new Api({
   }
 });
 
-// Запрашиваем у сервера данные пользователя и размещаем на странице
-api.getUserInfo()
-.then((userData) => {
-  console.log(userData);
+// Запрашиваем у сервера данные пользователя и карточки. Размещаем на странице
 
-  profileInfo = new UserInfo( {
-    nameSelector: profileNameSelector,
-    jobSelector: profileJobSelector,
-    avatarSelector: profileAvatarSelector
-  }, userData);
-
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+.then(([userData,  initialCards]) => {
+  profileInfo = new UserInfo(profileSelectors, userData);
   profileInfo.setUserInfo({
     name: userData.name,
     job: userData.about,
   });
   profileInfo.setUserAvatar(userData.avatar);
-})
-// Запрашиваем у сервера карточки и размещаем на странице
-.then(() => {
-  api.getInitialCards()
-  .then((initialCards) => {
-    cardsSection = new Section({
-      items: initialCards,
-      renderer: renderCard
-    }, cardsContainerSelector);
-    cardsSection.renderItems();
-  });
+  cardsSection = new Section({
+    items: initialCards,
+    renderer: renderCard
+  }, cardsContainerSelector);
+  cardsSection.renderItems(profileInfo.getUserId());
 })
 .catch((err) => {
   console.log(err);
 });
 
-
-// Запрашиваем у сервера карточки и размещаем на странице
-// api.getInitialCards()
-// .then((initialCards) => {
-//   cardsSection = new Section({
-//     items: initialCards,
-//     renderer: renderCard
-//   }, cardsContainerSelector);
-//   cardsSection.renderItems();
-// });
-
-
-
-
-// Создаем экземпляр класса Section, и заполняем страницу карточками
-// const cardsSection = new Section({
-//   items: [initialCards],
-//   renderer: renderCard
-// }, cardsContainerSelector);
-
-// cardsSection.renderItems();
 
 // Включаем валидацию
 enableValidation(mestoFormsSet);

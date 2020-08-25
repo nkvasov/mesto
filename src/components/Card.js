@@ -1,11 +1,14 @@
 export default class Card {
-  constructor({name, link, likes, owner}, cardTemplateSelector, handleCardClick, creatorId) {
+  constructor({name, link, likes, owner, _id}, cardTemplateSelector, handleImageClick, handleTrashClick, userId) {
     this._name = name;
     this._link = link;
     this._likes = likes;
     this._cardTemplateSelector = cardTemplateSelector;
-    this._openImage = handleCardClick;
-    if(owner._id === creatorId) {
+    this._openImage = handleImageClick;
+    this._openDeleteConfirmation = handleTrashClick
+    // this._deleteCardFromServer = handleTrashClick;
+    this._id = _id;
+    if(owner._id === userId) {
       this._owner = true;
     } else {
       this._owner = false;
@@ -21,16 +24,22 @@ export default class Card {
     return cardElement;
   }
 
-  _deleteCard(evt) {
-    evt.target.closest('.card').remove();
-  }
+  // _deleteCard = (evt) => {
+  //   this._deleteCardFromServer(this._id)
+  //   .then(() => {
+  //     evt.target.closest('.card').remove();
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
 
   _toggleLikeCard(evt) {
     evt.target.classList.toggle('card__like-btn_enabled');
   }
 
   _setCardListeners() {
-    this._element.querySelector('.card__trash-btn').addEventListener('click', this._deleteCard);
+    this._element.querySelector('.card__trash-btn').addEventListener('click', this._openDeleteConfirmation);
     this._element.querySelector('.card__like-btn').addEventListener('click', this._toggleLikeCard);
     this._element.querySelector('.card__image').addEventListener('click', this._openImage);
   }
