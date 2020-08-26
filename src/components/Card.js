@@ -1,17 +1,17 @@
 export default class Card {
-  constructor({name, link, likes, owner, _id}, cardTemplateSelector, handleImageClick, handleTrashClick, userId) {
+  constructor({name, link, likes, owner, _id}, {cardTemplateSelector, handleImageClick, handleTrashClick, handleCardDelete, userId}) {
     this._name = name;
     this._link = link;
     this._likes = likes;
     this._cardTemplateSelector = cardTemplateSelector;
     this._openImage = handleImageClick;
     this._openDeleteConfirmation = handleTrashClick
-    // this._deleteCardFromServer = handleTrashClick;
+    this._deleteCardFromServer = handleCardDelete;
     this._id = _id;
     if(owner._id === userId) {
-      this._owner = true;
+      this._isOwner = true;
     } else {
-      this._owner = false;
+      this._isOwner = false;
     }
 
   }
@@ -24,15 +24,24 @@ export default class Card {
     return cardElement;
   }
 
-  // _deleteCard = (evt) => {
-  //   this._deleteCardFromServer(this._id)
-  //   .then(() => {
-  //     evt.target.closest('.card').remove();
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // }
+  _deleteCardFromLayout = () => {
+    this._card = this._image.closest('.card');
+    this._card.remove();
+  }
+
+  _deleteCard = () => {
+    this._deleteCardFromServer(this._id)
+    .then(() => {
+      this._deleteCardFromLayout();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  getDeleteHandler = () => {
+    return this._deleteCard;
+  }
 
   _toggleLikeCard(evt) {
     evt.target.classList.toggle('card__like-btn_enabled');
@@ -51,7 +60,7 @@ export default class Card {
     this._image = this._element.querySelector('.card__image');
     this._image.src = this._link;
     this._image.alt = `фото ${this._name}`;
-    if(this._owner) {
+    if(this._isOwner) {
       this._element.querySelector('.card__trash-btn').classList.add('card__trash-btn_enabled');
     };
     this._setCardListeners();

@@ -4,13 +4,10 @@ export const cardsContainerSelector = '.cards__container';
 export const cardTemplateSelector = '.card-template';
 
 // Элементы секции Профиль на странице
-export const profileNameSelector = '.profile__name';
-export const profileJobSelector = '.profile__description';
-export const profileAvatarSelector = '.profile__avatar';
 const profile = document.querySelector('.profile');
 export const profileEditBtn = profile.querySelector('.profile__edit-btn');
 export const addCardBtn = profile.querySelector('.add-btn');
-
+// Селекторы секции профиль на странице
 export const profileSelectors = {
   nameSelector: '.profile__name',
   jobSelector: '.profile__description',

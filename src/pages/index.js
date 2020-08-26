@@ -1,5 +1,6 @@
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithSubmit from '../components/PopupWithSubmit';
 import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import Card from '../components/Card.js';
@@ -38,18 +39,21 @@ let profileInfo;
 // Функция создает экземпляр класса Card на основе входящих данных и размещает на страницу.
 // Использует иннициализованные в index.js переменные, поэтому размещена здесь.
 const renderCard = function(cardData, userId) {
-  const card = new Card(cardData,
-    cardTemplateSelector,
-    (evt) => {
+  const card = new Card(cardData, {
+    cardTemplateSelector: cardTemplateSelector,
+    handleImageClick: (evt) => {
       figurePopup.open(evt);
     },
-    () => {
-      confirmationPopup.open();
+    handleTrashClick: () => {
+      confirmationPopup.setSubmitHandler(card.getDeleteHandler());
+      confirmationPopup.open(card);
     },
-    // (cardId) => {
-    //  return api.deleteCard(cardId);
-    // },
-    userId);
+    handleCardDelete: (cardId) => {
+      return api.deleteCard(cardId);
+    },
+    userId: userId
+  });
+
   const cardElement = card.generateCard();
   cardsSection.addItem(cardElement);
 }
@@ -87,18 +91,11 @@ const cardPopup = new PopupWithForm( {
 } );
 cardPopup.setEventListeners();
 
-// Создаем попап подтверждения удаления карточки
-const confirmationPopup = new PopupWithForm( {
-  popupSelector: confirmationPopupSelector,
-  handleFormSubmit: (card) => {
-    card._delete();
-    // (cardId) => {
-    //  return api.deleteCard(cardId);
-    // },
-  }
-});
+// Создаем попап подтверждения удаления карточки и навешиваем слушателей
+const confirmationPopup = new PopupWithSubmit(confirmationPopupSelector);
+confirmationPopup.setEventListeners();
 
-// обработка нажатия кнопки Открытия попапа карточки
+// обработка нажатия кнопки Открытия попапа добавления карточки
 addCardBtn.addEventListener('click', () => {
   cardPopup.open();
 });
