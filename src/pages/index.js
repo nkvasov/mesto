@@ -41,6 +41,12 @@ let profileInfo;
 const renderCard = function(cardData, userId) {
   const card = new Card(cardData, {
     cardTemplateSelector: cardTemplateSelector,
+    handleLikeClick: (cardId) => {
+      return api.likeCard(cardId)
+    },
+    handleUnlikeClick: (cardId) => {
+      return api.unlikeCard(cardId)
+    },
     handleImageClick: (evt) => {
       figurePopup.open(evt);
     },
@@ -71,6 +77,9 @@ const profilePopup = new PopupWithForm( {
         name: inputData['profile-name'],
         job: inputData['profile-description']
       });
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 } );
