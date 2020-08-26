@@ -7,6 +7,7 @@ export const cardTemplateSelector = '.card-template';
 const profile = document.querySelector('.profile');
 export const profileEditBtn = profile.querySelector('.profile__edit-btn');
 export const addCardBtn = profile.querySelector('.add-btn');
+export const avatar = profile.querySelector('.profile__avatar');
 // Селекторы секции профиль на странице
 export const profileSelectors = {
   nameSelector: '.profile__name',
@@ -27,6 +28,9 @@ const cardForm = document.querySelector('[name="add-card"]');
 // export const cardNameInput = cardForm.querySelector('[name="card-name"]');
 // export const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
-// Элементы попапа "Подтверждение удаления карточки"
+// Селектор попапа "Подтверждение удаления карточки"
 export const confirmationPopupSelector = '.confirmation-popup';
+
+// Селектор попапа "Обновление аватара"
+export const avatarPopupSelector = '.update-avatar-popup';
 

@@ -5,8 +5,13 @@
   margin-right: 30px;
   object-fit: cover;
   object-position: center;
+  cursor: url('../../../images/avatar-cursor.svg'), pointer;
+  transition: 0.2s;
 }
 
+.profile__avatar:hover {
+  opacity: 0.2;
+}
 
 @media screen and (max-width: 768px) {
   .profile__avatar {

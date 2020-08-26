@@ -48,8 +48,20 @@
         </form>
       </section>
 
+      <section class="popup popup_content_form update-avatar-popup">
+        <form class="form popup__container form-to-validate" name="update-avatar" novalidate>
+          <h3 class="form__title">Обновить аватар</h3>
+          <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
+          <div class="form__field">
+            <input class="form__input" id="avatar-link" type="url" name="avatar-link" placeholder="Ссылка на картинку" required>
+            <span class="form__input-error form__input-error_origin_avatar-link">ошибка</span>
+          </div>
+          <button class="form__submit-btn" type="submit">Сохранить</button>
+        </form>
+      </section>
+
       <section class="popup popup_content_form edit-profile-popup">
-        <form class="form popup__container" name="edit-profile" novalidate>
+        <form class="form popup__container form-to-validate" name="edit-profile" novalidate>
           <h3 class="form__title">Редактировать профиль</h3>
           <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
           <div class="form__field">
@@ -73,7 +85,7 @@
       </section>
 
       <section class="popup popup_content_form card-popup">
-        <form class="form popup__container" name="add-card" novalidate>
+        <form class="form popup__container form-to-validate" name="add-card" novalidate>
           <h3 class="form__title">Новое место</h3>
           <button class="close-btn form__close-btn" type="reset" aria-label="Закрыть попап"></button>
           <div class="form__field">

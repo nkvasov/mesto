@@ -7,7 +7,6 @@
 
 }
 
-
-.form__field:nth-of-type(2) {
+.form__field:last-of-type {
   margin-bottom: 27px;
 }

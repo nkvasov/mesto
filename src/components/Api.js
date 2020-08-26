@@ -38,6 +38,21 @@ export default class Api {
     });
   }
 
+  patchAvatar(inputValues) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify(inputValues)
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Ошибка: ${res.status}`);
+      };
+    })
+  }
+
   postCard(inputValues) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',

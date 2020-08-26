@@ -17,8 +17,8 @@ export const mestoFormsSet = {
       openBtnSelector: '.add-btn',
     },
     {
-      formName: 'card-delete-confirmation',
-      openBtnSelector: '.card-popup .form__submit-btn'
+      formName: 'update-avatar',
+      openBtnSelector: '.profile__avatar'
     }
   ]
 };

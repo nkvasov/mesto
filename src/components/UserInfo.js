@@ -15,13 +15,13 @@ export default class UserInfo {
   }
 
   // Размещает указанные данные на странице
-  setUserInfo({name, job}) {
+  setUserInfoToLayout({name, job}) {
     this._nameElement.textContent = name;
     this._jobElement.textContent = job;
     this._avatarElement.alt = `Аватар пользователя ${name}`;
   }
 
-  setUserAvatar(avatar) {
+  setUserAvatarToLayout(avatar) {
     this._avatarElement.src = avatar;
   }
 

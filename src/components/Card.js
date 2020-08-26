@@ -37,7 +37,9 @@ export default class Card {
 
   // Для переноса обработчика в попап Подтверждения удаления карточки
   getDeleteHandler = () => {
+    // console.log(this._deleteCard);
     return this._deleteCard;
+
   }
 
   _toggleLikeIcon() {
