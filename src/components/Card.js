@@ -26,21 +26,17 @@ export default class Card {
   }
 
   _deleteCard = () => {
-    this._deleteCardFromServer(this._id)
+    return this._deleteCardFromServer(this._id)
     .then(() => {
       this._card.remove();
-    })
-    .catch((err) => {
-      console.log(err);
     });
   }
 
-  // Для переноса обработчика в попап Подтверждения удаления карточки
-  getDeleteHandler = () => {
-    // console.log(this._deleteCard);
-    return this._deleteCard;
-
+  // Передает наружу приватный метод по удалению карточки, привязанный к указанному экземпляру класса
+  getActionToConfirm = (card) => {
+    return this._deleteCard.bind(card);
   }
+
 
   _toggleLikeIcon() {
     this._likeBtn.classList.toggle('card__like-btn_enabled');

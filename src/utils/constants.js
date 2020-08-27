@@ -25,12 +25,11 @@ export const profileJobInput = profileForm.querySelector('[name="profile-descrip
 // Элементы попапа "Добавление карточки"
 export const cardPopupSelector = '.card-popup';
 const cardForm = document.querySelector('[name="add-card"]');
-// export const cardNameInput = cardForm.querySelector('[name="card-name"]');
-// export const cardLinkInput = cardForm.querySelector('[name="card-link"]');
 
 // Селектор попапа "Подтверждение удаления карточки"
 export const confirmationPopupSelector = '.confirmation-popup';
 
-// Селектор попапа "Обновление аватара"
+// Селектор и элемент попапа "Обновление аватара"
 export const avatarPopupSelector = '.update-avatar-popup';
+export const avatarLinkInput = document.querySelector('[name="avatar-link"]');
 

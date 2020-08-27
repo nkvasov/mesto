@@ -79,6 +79,13 @@ export default class Api {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
+    })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Ошибка: ${res.status}`);
+      }
     });
   }
 
@@ -110,10 +117,3 @@ export default class Api {
     });
   }
 }
-
-        // name: 'Marie Skłodowska Curie',
-        // about: 'Physicist and Chemist'
-
-
-// Токен: 4925288f-4ad5-4bea-a0ab-09ab5e2fc610
-// Идентификатор группы: cohort-14
