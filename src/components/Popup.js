@@ -22,6 +22,7 @@ export default class Popup {
     document.removeEventListener('keydown', this._handleEscClose);
   }
 
+
   // Добавляет попапу функции закрытия по кнопке и по оверлею, а также останавливает всплытие событий на контейнере попапа
   setEventListeners() {
     this._element.querySelector('.close-btn').addEventListener('click', () => {

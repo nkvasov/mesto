@@ -68,18 +68,15 @@ const renderCard = function(cardData, userId) {
 const profilePopup = new PopupWithForm( {
   popupSelector: profilePopupSelector,
   handleFormSubmit: (inputData) => {
-    api.patchUserInfo({
+    return api.patchUserInfo({
       name: inputData['profile-name'],
       about: inputData['profile-description']
     })
-    .then(() => {
+    .then((userData) => {
       profileInfo.setUserInfoToLayout({
-        name: inputData['profile-name'],
-        job: inputData['profile-description']
+        name: userData.name,
+        job: userData.about
       });
-    })
-    .catch((err) => {
-      console.log(err);
     });
   }
 } );
@@ -88,7 +85,7 @@ profilePopup.setEventListeners();
 const avatarPopup = new PopupWithForm( {
   popupSelector: avatarPopupSelector,
   handleFormSubmit: (inputData) => {
-    api.patchAvatar({
+    return api.patchAvatar({
       avatar: inputData['avatar-link']
     })
     .then((userData) => {
@@ -105,7 +102,7 @@ avatarPopup.setEventListeners();
 const cardPopup = new PopupWithForm( {
   popupSelector: cardPopupSelector,
   handleFormSubmit: (inputData) => {
-    api.postCard({
+    return api.postCard({
       name: inputData['card-name'],
       link: inputData['card-link']
     })

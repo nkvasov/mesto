@@ -35,6 +35,13 @@ export default class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify(inputValues)
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Ошибка: ${res.status}`);
+      }
     });
   }
 
@@ -49,8 +56,8 @@ export default class Api {
         return res.json();
       } else {
         return Promise.reject(`Ошибка: ${res.status}`);
-      };
-    })
+      }
+    });
   }
 
   postCard(inputValues) {
