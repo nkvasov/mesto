@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Место</title>
+<link href="main.css" rel="stylesheet"></head>
+
+<body class="page">
+
+  <div class="page__container">
+    <header class="header">
+      <a href="#" class="header__logo">
+        <img src="c4451891fd80c98a66cf0bc990fb269e.svg" alt="Логотип Mesto Russia">
+      </a>
+    </header>
+
+    <main class="content">
+
+      <section class="profile">
+        <div class="profile__content">
+          <img src="c15cb08ab8ecfaba54c6f9584bbc61a1.jpg" class="profile__avatar" alt="фото Жак-Ив Кусто">
+          <div class="profile__info">
+
+            <div class="profile__title-block">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__edit-btn" type="button" aria-label="Редактировать профиль"></button>
+            </div>
+            <p class="profile__description">Исследователь океана</p>
+
+          </div>
+
+        </div>
+        <button class="add-btn" type="button"  aria-label="Добавить место"></button>
+
+      </section>
+
+      <section class="cards">
+        <ul class="cards__container"></ul>
+      </section>
+
+      <section class="popup popup_content_form confirmation-popup">
+        <form class="form popup__container" name="card-delete-confirmation" novalidate>
+          <h3 class="form__title">Вы уверены?</h3>
+          <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
+          <button class="form__submit-btn" type="submit">Да</button>
+        </form>
+      </section>
+
+      <section class="popup popup_content_form update-avatar-popup">
+        <form class="form popup__container form-to-validate" name="update-avatar" novalidate>
+          <h3 class="form__title">Обновить аватар</h3>
+          <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
+          <div class="form__field">
+            <input class="form__input" id="avatar-link" type="url" name="avatar-link" placeholder="Ссылка на картинку" required>
+            <span class="form__input-error form__input-error_origin_avatar-link">ошибка</span>
+          </div>
+          <button class="form__submit-btn" type="submit">Сохранить</button>
+        </form>
+      </section>
+
+      <section class="popup popup_content_form edit-profile-popup">
+        <form class="form popup__container form-to-validate" name="edit-profile" novalidate>
+          <h3 class="form__title">Редактировать профиль</h3>
+          <button class="close-btn form__close-btn" type="reset" name="close" aria-label="Закрыть попап"></button>
+          <div class="form__field">
+            <input class="form__input" id="profile-name" type="text" name="profile-name" placeholder="Имя" required minlength="2" maxlength="40">
+            <span class="form__input-error form__input-error_origin_profile-name">ошибка</span>
+          </div>
+          <div class="form__field">
+            <input class="form__input" id="profile-description" type="text" name="profile-description" placeholder="Описание" required minlength="2" maxlength="200">
+            <span class="form__input-error form__input-error_origin_profile-description"></span>
+          </div>
+          <button class="form__submit-btn" type="submit">Сохранить</button>
+        </form>
+      </section>
+
+      <section class="popup popup_content_figure image-popup">
+        <figure class="figure popup__container">
+          <button class="close-btn figure__close-btn" type="button" aria-label="Закрыть попап"></button>
+          <img class="figure__image" src="#" alt="описание">
+          <figcaption class="figure__caption">Подпись</figcaption>
+        </figure>
+      </section>
+
+      <section class="popup popup_content_form card-popup">
+        <form class="form popup__container form-to-validate" name="add-card" novalidate>
+          <h3 class="form__title">Новое место</h3>
+          <button class="close-btn form__close-btn" type="reset" aria-label="Закрыть попап"></button>
+          <div class="form__field">
+            <input class="form__input" id="card-name" type="text" name="card-name" placeholder="Название" required minlength="1" maxlength="30">
+            <span class="form__input-error form__input-error_origin_card-name"></span>
+          </div>
+          <div class="form__field">
+            <input class="form__input" id="card-link" type="url" name="card-link" placeholder="Ссылка на картинку" required>
+            <span class="form__input-error form__input-error_origin_card-link"></span>
+          </div>
+          <button class="form__submit-btn" type="submit">Создать</button>
+        </form>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+    </footer>
+
+  </div>
+
+  <template class="card-template">
+    <li class="card">
+      <button class="card__trash-btn" aria-label="Удалить картинку с подписью" type="button" name="trash"></button>
+      <img class="card__image" src="#" alt="описание">
+      <div class="card__caption">
+        <h2 class="card__title"></h2>
+        <div class="card__like-block">
+          <button class="card__like-btn" type="button" name="like" aria-label="Поставить лайк картинке"></button>
+          <p class="card__like-numbers">777777</p>
+        </div>
+
+      </div>
+    </li>
+  </template>
+
+<script src="main.js"></script></body>
+
+</html>
