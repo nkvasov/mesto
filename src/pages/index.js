@@ -112,6 +112,9 @@ const profilePopup = new PopupWithForm( {
         name: userData.name,
         job: userData.about
       });
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 } );

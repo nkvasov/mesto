@@ -45,7 +45,7 @@ export default class Card {
   _updateCardLikes = (cardData) => {
     this._toggleLikeIcon();
     // Если лайков нет, то будет пустая строка вместо 0
-    this._likeNumbersElement.textContent = cardData.likes.length ? cardData.likes.length : '';
+    this._likeNumbersElement.textContent = cardData.likes.length || '';
     this._isLiked = !this._isLiked;
   }
 
